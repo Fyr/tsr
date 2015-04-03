@@ -7,12 +7,12 @@
 <?
 	echo $this->Html->meta('icon');
 
-	echo $this->Html->css(array('bootstrap.min', 'bootstrap-responsive.min', 'jquery-ui-1.10.3.custom', 'admin'));
+	echo $this->Html->css(array('bootstrap-2.3.2-min', 'bootstrap-2.3.2-responsive.min', 'jquery-ui-1.10.3.custom', 'admin'));
 	$aScripts = array(
 		'vendor/jquery/jquery-1.10.2.min',
 		'vendor/jquery/jquery.cookie',
 		'vendor/jquery/jquery-ui-1.10.3.custom.min',
-		'vendor/bootstrap.min',
+		'vendor/bootstrap/bootstrap-2.3.2-min',
 		'vendor/meiomask',
 		'admin',
 	);

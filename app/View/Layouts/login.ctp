@@ -6,8 +6,8 @@
 <?php
 	echo $this->Html->meta('icon');
 
-	echo $this->Html->css(array('bootstrap.min', 'login'));
-	echo $this->Html->script(array('vendor/jquery/jquery-1.10.2.min', 'bootstrap.min'));
+	echo $this->Html->css(array('bootstrap-2.3.2-min', 'login'));
+	echo $this->Html->script(array('vendor/jquery/jquery-1.10.2.min', 'bootstrap-2.3.2-min'));
 
 	echo $this->fetch('meta');
 	echo $this->fetch('css');
