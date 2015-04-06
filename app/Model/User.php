@@ -17,16 +17,6 @@ class User extends AppModel {
 				'message' => 'That name has already been taken'
 			)
 		),
-		'email' => array(
-			'checkEmail' => array(
-				'rule' => 'email',
-				'message' => 'Email is incorrect'
-			),
-			'checkIsUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This email has already been used'
-			)
-		),
 		'password' => array(
 			'checkNotEmpty' => array(
 				'rule' => array('notEmpty'),
@@ -53,7 +43,7 @@ class User extends AppModel {
 		if($data['password'] == $this->data['User']['password_confirm']){
 			return true;
 		}
-		$this->invalidate('password_confirm', 'Your password and its confirmation do not match');
+		$this->invalidate('password_confirm', __('Your password and its confirmation do not match'));
 		return false;
 	}
 	

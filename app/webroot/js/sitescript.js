@@ -7,36 +7,33 @@ $(document).ready(function() {
 	
 	
 	$('a.dd').bind('click', function (e) {
-        e.preventDefault();
+		e.preventDefault();
 		
-        var which = $(this).attr('href').replace('#', '');
+		var which = $(this).attr('href').replace('#', '');
 		headerHeight = $("#header").height(); // Get fixed header height
 		var position= $("#header").css("position");
-		ww=$('#header').width();
+		ww = $('#header').width();
+		if (ww <= 976) {
+			off = (headerHeight==80) ? 0 : 80;
+		} else {
+			off = (position=="fixed") ? headerHeight : headerHeight * 2;
+		}
 		
-			if(ww<=976){
-				 
-				 if(headerHeight==80){off=0;}
-				 else off=80;
-				}
-				else {
-					
-					if (position=="fixed") {
-						off=headerHeight;
-						} else {
-							off=headerHeight*2; 
-						}
-					
-					}
+		var offset = $('a[name="' + which + '"]').offset().top - off;
 		
-        var offset = $('a[name="' + which + '"]').offset().top - off;
+		$('html, body').animate({ scrollTop: offset }, 500, function () {
+		//location.hash = target; 
+		});
 		
-        $('html, body').animate({ scrollTop: offset }, 500, function () {
-            //location.hash = target; 
-        });
-
-        return false;
-    });
+		return false;
+	});
+	
+	var url = window.location.href;
+	var pos = url.indexOf('#');
+	if (pos > -1) {
+		link = url.substr(pos + 1);
+		$('a.dd[href="#' + link + '"]').click();
+	}
 	
 	
 	var ps2 = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/; //reg for email

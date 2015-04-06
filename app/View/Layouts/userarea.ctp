@@ -103,11 +103,9 @@
 <!--Collapse navigation menu icon end -->
 <!--Top Navigation Start-->
 <ul class="top_menu">
-	
-          
-    <li><a href="#">(yourmail@mail.com(profile</a></li>
+    <li><a href="#"><?=$currUser['User']['username']?></a></li>
     <li><a href="#" class="not_active">PER</a> | <a href="#">ENG</a></li>
-    <li><a href="#">logout</a></li>        
+    <li><?=$this->Html->link(__('Logout'), array('controller' => 'Pages', 'action' => 'logout'))?></a></li>
 </ul>
 
 <!--Top Navigation End-->

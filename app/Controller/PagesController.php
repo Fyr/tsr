@@ -2,26 +2,27 @@
 App::uses('AppController', 'Controller');
 class PagesController extends AppController {
 	public $name = 'Pages';
-	public $uses = array('Page', 'Product', 'News');
+	public $uses = array('User');
 	// public $helpers = array('ArticleVars');
 
 	public function home() {
-		// Welcome block
-		$article = $this->Page->findBySlug('home');
-		$this->set('home_article', $article);
-		
-		// Новости
-		$conditions = array('News.published' => 1);
-		$order = 'News.created DESC';
-		$limit = 3;
-		$news = $this->News->find('all', compact('conditions', 'order', 'limit'));
-		$this->set('news', $news);
-		
-		// Новинки
-		/*
-		$products = $this->Product->find('all', array('conditions' => array('Product.published' => 1), 'order' => 'Product.created DESC', 'limit' => 2));
-		$this->set('products', $products);
-		*/
+		if ($this->request->is(array('put', 'post'))) {
+			if ($this->request->data('action') == 'signup') {
+				$this->request->data('User.user_group_id', 2);
+				if ($this->User->save($this->request->data('User'))) {
+					if ($this->Auth->login()) {
+						return $this->redirect($this->Auth->loginRedirect);
+					}
+				}
+			} elseif ($this->request->data('action') == 'login') {
+				$this->request->data('User', $this->request->data('Login'));
+				if ($this->Auth->login()) {
+					return $this->redirect($this->Auth->loginRedirect);
+				} else {
+					$this->Session->setFlash(AUTH_ERROR, null, null, 'auth');
+				}
+			}
+		}
 		
 		$this->currMenu = 'Home';
 	}
@@ -35,5 +36,9 @@ class PagesController extends AppController {
 	
 	public function userArea() {
 		$this->layout = 'userarea';
+	}
+	
+	public function logout() {
+		$this->redirect($this->Auth->logout());
 	}
 }

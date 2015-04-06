@@ -23,7 +23,7 @@
 <?
 	echo $this->Html->meta('icon');
 
-	echo $this->Html->css(array('bootstrap.min', 'font-awesome', 'flexslider', 'styles'));
+	echo $this->Html->css(array('bootstrap.min', 'font-awesome', 'flexslider', 'styles', 'extra'));
 	
 	$aScripts = array(
 		'vendor/jquery/jquery-1.11.2.min',

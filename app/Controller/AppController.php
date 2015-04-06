@@ -1,8 +1,20 @@
 <?php
 App::uses('Controller', 'Controller');
 class AppController extends Controller {
+	public $uses = array('User', 'Media.Media');
+	public $components = array(
+		'Session',
+		'Auth' => array(
+			'authorize'      => array('Controller'),
+			'loginAction'    => array('plugin' => '', 'controller' => 'Pages', 'action' => 'home', '#' => 'signup'),
+			'loginRedirect'  => array('plugin' => '', 'controller' => 'Pages', 'action' => 'userarea', '#' => ''),
+			'logoutRedirect' => '/'
+		),
+	);
+	
 	public $paginate;
-	public $aNavBar = array(), $aBottomLinks = array(), $currMenu = '', $currLink = '', $pageTitle = '', $aBreadCrumbs = array();
+	protected $aNavBar = array(), $aBottomLinks = array(), $currMenu = '', $currLink = '', $pageTitle = '', $aBreadCrumbs = array();
+	protected $currUserID, $currUser;
 	
 	public function __construct($request = null, $response = null) {
 		$this->_beforeInit();
@@ -19,16 +31,16 @@ class AppController extends Controller {
 	}
 	
 	public function isAuthorized($user) {
-    	$this->set('currUser', $user);
-		return Hash::get($user, 'active');
+		return true;
 	}
 	
 	public function beforeFilter() {
-		parent::beforeFilter();
+		$this->Auth->allow(array('home', 'index', 'view'));
 		$this->beforeFilterLayout();
 	}
 	
 	protected function beforeFilterLayout() {
+		/*
 		$this->aNavBar = array(
 			'Home' => array('label' => __('Home'), 'href' => array('controller' => 'Pages', 'action' => 'home')),
 			'News' => array('label' => __('News'), 'href' => array('controller' => 'Articles', 'action' => 'index', 'objectType' => 'News')),
@@ -37,6 +49,7 @@ class AppController extends Controller {
 			'o-proekte' => array('label' => __('About us'), 'href' => array('controller' => 'pages', 'action' => 'view', 'o-proekte.html')),
 			'Contacts' => array('label' => __('Contacts'), 'href' => array('controller' => 'SiteContacts', 'action' => 'index'))
 		);
+		*/
 		$this->aBottomLinks = $this->aNavBar;
 		
 		$this->currMenu = $this->_getCurrMenu();
@@ -71,21 +84,12 @@ class AppController extends Controller {
 	}
 	
 	protected function beforeRenderLayout() {
-		$this->loadModel('Media.Media');
-		$this->set('aSlider', $this->Media->getObjectList('Slider'));
-		
-		$this->loadModel('CategoryProduct');
-		$aCategories = $this->CategoryProduct->find('list'); //getObjectOptions();
-		$this->set('aCategories', $aCategories);
-		/*
-		$this->loadModel('CategoryProduct');
-		$aCategories = $this->CategoryProduct->find('list'); //getObjectOptions();
-		$this->set('aCategories', $aCategories);
-		*/
+		if ($this->Auth->loggedIn()) {
+			$this->currUserID = $this->Auth->user('id');
+			$this->currUser = $this->User->findById($this->currUserID);
+			
+		}
+		$this->set('currUser', $this->currUser);
 	}
 	
-	protected function getObjectType() {
-		$objectType = $this->request->param('objectType');
-		return ($objectType && in_array($objectType, array('SiteArticle', 'News'))) ? $objectType : 'SiteArticle';
-	}
 }

@@ -16,7 +16,7 @@ CakeLog::config('error', array(
 	'file' => 'error',
 ));
 
-Configure::write('Config.language', 'rus');
+// Configure::write('Config.language', 'rus');
 
 CakePlugin::loadAll();
 

@@ -166,7 +166,83 @@ our widget, we start promoting your content on them sending you new and interest
                 </ul><!--//press-list-->
                 
             </div><!--//container-->
-        </section><!--//press-->    
+        </section><!--//press-->
+        
+        <section class="contact-section section">
+            <div class="container">
+            <a name="login"></a>
+                <h2 class="title text-center">Sign in</h2>
+<?
+	if ($message = $this->Session->flash('auth')) {
+		// echo $message;
+?>
+                <p class="text-center error-message"><?=$message?></p>
+<?
+	}
+?>
+                <form id="" class="contact-form" method="post" action="#login">
+                	<?=$this->Form->hidden('action', array('value' => 'login'))?>
+                    <div class="row text-center">
+                        <div class="contact-form-inner col-md-8 col-sm-12 col-xs-12 col-md-offset-2 col-sm-offset-0 xs-offset-0">
+                            <div class="row">      
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <label class="sr-only" for="cemail">Email address</label>
+                                    <?=$this->Form->input('Login.username', array('type' => 'email', 'class' => 'form-control', 'placeholder' => 'Your email address', 'label' => false))?>
+                                    <!--input type="email" class="form-control" id="cemail" name="email" placeholder="Your email address" required-->
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <label class="sr-only" for="cname">Password</label>
+                                    <?=$this->Form->input('Login.password', array('type' => 'password', 'class' => 'form-control', 'placeholder' => 'Your password', 'label' => false))?>
+                                    <!-- input type="text" class="form-control" id="cname" name="name" placeholder="Your password" minlength="2" required-->
+                                </div>                    
+                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                 	<input type="hidden" name="lang" value="eng">
+                                    <button type="submit" class="btn btn-block btn-cta btn-cta-primary">Sign in</button>
+                                </div>                           
+                            </div>
+                        </div>
+                    </div>
+                    <div id="form-messages"></div>
+                </form>
+            </div>
+        </section>
+        
+        <section class="contact-section section">
+            <div class="container">
+            <a name="signup"></a>
+                <h2 class="title text-center">Sign up</h2>
+                <p class="intro text-center">Please, sign up to get access to your user area.</p>
+                <form id="" class="contact-form" method="post" action="#signup">
+                	<?=$this->Form->hidden('action', array('value' => 'signup'))?>
+                    <div class="row text-center">
+                        <div class="contact-form-inner col-md-8 col-sm-12 col-xs-12 col-md-offset-2 col-sm-offset-0 xs-offset-0">
+                            <div class="row">      
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <label class="sr-only" for="cemail">Email address</label>
+                                    <?=$this->Form->input('User.username', array('type' => 'email', 'class' => 'form-control', 'placeholder' => 'Your email address', 'label' => false))?>
+                                    <!--input type="email" class="form-control" id="cemail" name="email" placeholder="Your email address" required-->
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <label class="sr-only" for="cname">Password</label>
+                                    <?=$this->Form->input('User.password', array('type' => 'password', 'class' => 'form-control', 'placeholder' => 'Your password', 'label' => false))?>
+                                    <!-- input type="text" class="form-control" id="cname" name="name" placeholder="Your password" minlength="2" required-->
+                                </div>                    
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                    <label class="sr-only" for="cname">Confirm password</label>
+                                    <?=$this->Form->input('User.password_confirm', array('type' => 'password', 'class' => 'form-control', 'placeholder' => 'Confirm your password', 'label' => false))?>
+                                    <!-- input type="text" class="form-control" id="cname" name="name" placeholder="Your password" minlength="2" required-->
+                                </div>
+                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                 	<input type="hidden" name="lang" value="eng">
+                                    <button type="submit" class="btn btn-block btn-cta btn-cta-primary">Sign up</button>
+                                </div>                           
+                            </div>
+                        </div>
+                    </div>
+                    <div id="form-messages"></div>
+                </form>
+            </div>
+        </section>
         
         
         <!-- ******Contact Section****** --> 
