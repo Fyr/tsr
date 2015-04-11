@@ -2,7 +2,7 @@
 App::uses('AppController', 'Controller');
 class PagesController extends AppController {
 	public $name = 'Pages';
-	public $uses = array('User');
+	public $uses = array('User', 'Page');
 	// public $helpers = array('ArticleVars');
 
 	public function home() {
@@ -23,8 +23,9 @@ class PagesController extends AppController {
 				}
 			}
 		}
-		
 		$this->currMenu = 'Home';
+		$articles['features'] = $this->Page->findBySlug('features');
+		$this->set('articles', $articles);
 	}
 	
 	public function view($slug) {
@@ -32,10 +33,6 @@ class PagesController extends AppController {
 		$this->set('article', $article);
 		
 		$this->currMenu = $slug;
-	}
-	
-	public function userArea() {
-		$this->layout = 'userarea';
 	}
 	
 	public function logout() {

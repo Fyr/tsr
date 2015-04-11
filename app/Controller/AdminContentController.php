@@ -34,6 +34,9 @@ class AdminContentController extends AdminController {
         	'Product' => array(
         		'fields' => array('title', 'slug', 'featured'),
         	),
+        	'CampaignCategory' => array(
+            	'fields' => array('id', 'title')
+            ),
         );
         
         $aRowset = $this->PCArticle->setModel($objectType)->index();

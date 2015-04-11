@@ -1,0 +1,1 @@
+<h3 class="ls-top-header <?=(isset($class)) ? $class : ''?>"><?=$title?></h3>

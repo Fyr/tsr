@@ -19,38 +19,9 @@
     		'class' => 'icon-color icon-open-folder', 
     		'href' => $this->Html->url(array('action' => 'index', 'SubcategoryArticle', '~id'))
     	);
-    } elseif ($objectType == 'CarType') {
-    	$actions['row'][] = array(
-    		'label' => $this->ObjectType->getTitle('index', 'CarSubtype'), 
-    		'class' => 'icon-color icon-open-folder', 
-    		'href' => $this->Html->url(array('action' => 'index', 'CarSubtype', '~id'))
-    	);
     }
     
 	$columns = $this->PHTableGrid->getDefaultColumns($objectType);
-	if ($objectType == 'CarType') {
-		$columns = array_merge(
-			array(
-				'CarType.image' => array('key' => 'CarType.image', 'label' => 'Фото', 'align' => 'center', 'showFilter' => false, 'showSorting' => false),
-			),
-			$columns
-		);
-		unset($columns['Media.id']);
-		unset($columns['Media.object_type']);
-		unset($columns['Media.file']);
-		unset($columns['Media.ext']);
-		foreach($aRowset as &$row) {
-			$img = $this->Media->imageUrl($row, '100x50');
-			$row['CarType']['image'] = ($img) ? $this->Html->image($img) : '<img src="/img/default_cartype.jpg" style="width: 50px; alt="" />';
-			/*
-	    	$row['Product']['image'] = ($img) ? $this->Html->link(
-	    		$this->Html->image($img),
-	    		$this->Media->imageUrl($row, 'noresize'),
-	    		array('escape' => false, 'class' => 'fancybox', 'rel' => 'gallery')
-	    	) : '<img src="/img/default_product.jpg" style="width: 50px; alt="" />';
-	    	*/
-		}
-	}
 ?>
 <?=$this->element('admin_title', compact('title'))?>
 <div class="text-center">

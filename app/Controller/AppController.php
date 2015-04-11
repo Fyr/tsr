@@ -6,8 +6,8 @@ class AppController extends Controller {
 		'Session',
 		'Auth' => array(
 			'authorize'      => array('Controller'),
-			'loginAction'    => array('plugin' => '', 'controller' => 'Pages', 'action' => 'home', '#' => 'signup'),
-			'loginRedirect'  => array('plugin' => '', 'controller' => 'Pages', 'action' => 'userarea', '#' => ''),
+			'loginAction'    => array('plugin' => '', 'controller' => 'Pages', 'action' => 'home', '#' => 'login'),
+			'loginRedirect'  => array('plugin' => 'user', 'controller' => 'Campaigns', 'action' => 'index', '#' => ''),
 			'logoutRedirect' => '/'
 		),
 	);
@@ -35,7 +35,6 @@ class AppController extends Controller {
 	}
 	
 	public function beforeFilter() {
-		$this->Auth->allow(array('home', 'index', 'view'));
 		$this->beforeFilterLayout();
 	}
 	
@@ -51,9 +50,14 @@ class AppController extends Controller {
 		);
 		*/
 		$this->aBottomLinks = $this->aNavBar;
-		
 		$this->currMenu = $this->_getCurrMenu();
 	    $this->currLink = $this->currMenu;
+	    
+	    $this->Auth->allow(array('home', 'view'));
+	    if ($this->Auth->loggedIn()) {
+			$this->currUserID = $this->Auth->user('id');
+			$this->currUser = $this->User->findById($this->currUserID);
+		}
 	}
 	
 	protected function _getCurrMenu() {
@@ -84,12 +88,16 @@ class AppController extends Controller {
 	}
 	
 	protected function beforeRenderLayout() {
-		if ($this->Auth->loggedIn()) {
-			$this->currUserID = $this->Auth->user('id');
-			$this->currUser = $this->User->findById($this->currUserID);
-			
-		}
 		$this->set('currUser', $this->currUser);
 	}
 	
+	/**
+	 * Sets flashing message
+	 *
+	 * @param str $msg
+	 * @param str $type - must be 'success', 'error' or empty
+	 */
+	protected function setFlash($msg, $type = 'info') {
+		$this->Session->setFlash($msg, 'default', array(), $type);
+	}
 }

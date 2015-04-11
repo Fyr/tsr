@@ -70,6 +70,8 @@ class PHTableGridHelper extends AppHelper {
             $actions[$type] = array_values($array);
 		}
 		
+		$options['init'] = (!isset($options['init']) || $options['init']);
+		
 		$html = '
 <span id="'.$container_id.'"></span>
 <script type="text/javascript">
@@ -85,7 +87,14 @@ $(document).ready(function(){
 		actions: '.json_encode($actions).'
 	};
 	'.$container_id.' = new Grid(config);
-});
+';
+	if ($options['init']) {
+		$html.= '
+	'.$container_id.'.init();
+	'.$container_id.'.render();
+';
+	}
+	$html.= '});
 </script>
 ';
 		return $html;

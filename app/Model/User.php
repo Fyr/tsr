@@ -8,10 +8,6 @@ class User extends AppModel {
 				'rule' => 'notEmpty',
 				'message' => 'Field is mandatory',
 			),
-			'checkNameLen' => array(
-				'rule' => array('between', 5, 15),
-				'message' => 'The name must be between 5 and 15 characters'
-			),
 			'checkIsUnique' => array(
 				'rule' => 'isUnique',
 				'message' => 'That name has already been taken'
@@ -21,10 +17,6 @@ class User extends AppModel {
 			'checkNotEmpty' => array(
 				'rule' => array('notEmpty'),
 				'message' => 'Field is mandatory'
-			),
-			'checkPswLen' => array(
-				'rule' => array('between', 5, 15),
-				'message' => 'The password must be between 5 and 15 characters'
 			),
 			'checkMatchPassword' => array(
 				'rule' => array('matchPassword'),

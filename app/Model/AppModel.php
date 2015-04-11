@@ -43,7 +43,6 @@ class AppModel extends Model {
 			$this->$model = new $model();
 		}
 	}
-
 	
 	private function _getObjectConditions($objectType = '', $objectID = '') {
 		$conditions = array();

@@ -17,6 +17,11 @@ class ObjectTypeHelper extends AppHelper {
                 'User' => __('Users'),
                 'CategoryProduct' => __('Product categories'),
                 'Product' => __('Products'),
+                'Campaign' => __('Campaigns'),
+                'CampaignCategory' => __('Campaign categories'),
+                'Advert' => __('Adverts'),
+                'AdvertCategory' => __('Advert categories'),
+                'Informer' => __('Informers'),
             ), 
             'create' => array(
                 'Article' => __('Create Article'),
@@ -31,6 +36,11 @@ class ObjectTypeHelper extends AppHelper {
                 'User' => __('Create User'),
                 'CategoryProduct' => __('Create Product category'),
                 'Product' => __('Create Product'),
+                'Campaign' => __('Create campaign'),
+                'CampaignCategory' => __('Create category'),
+                'Advert' => __('Create advert'),
+                'AdvertCategory' => __('Create category'),
+                'Informer' => __('Create informer'),
             ),
             'edit' => array(
                 'Article' => __('Edit Article'),
@@ -44,11 +54,19 @@ class ObjectTypeHelper extends AppHelper {
                 'FormField' => __('Edit tech.param'),
                 'User' => __('Edit User'),
                 'CategoryProduct' => __('Edit Product category'),
-                'Product' => __('Edit Product')
+                'Product' => __('Edit Product'),
+                'Campaign' => __('Edit campaign'),
+                'CampaignCategory' => __('Edit category'),
+                'Advert' => __('Edit advert'),
+                'AdvertCategory' => __('Edit category'),
+                'Informer' => __('Edit informer'),
             ),
             'view' => array(
             	'Article' => __('View Article'),
             	'News' => __('View News article'),
+            ),
+            'stats' => array(
+            	'Campaign' => __('Campaign statistics'),
             )
         );
         return $Titles;
@@ -56,7 +74,7 @@ class ObjectTypeHelper extends AppHelper {
     
     public function getTitle($action, $objectType) {
         $aTitles = $this->_getTitles();
-        return (isset($aTitles[$action][$objectType])) ? $aTitles[$action][$objectType] : $aTitles[$action]['Article'];
+        return (isset($aTitles[$action][$objectType])) ? $aTitles[$action][$objectType] : __(ucfirst($action).' '.$objectType);
     }
     
     public function getBaseURL($objectType, $objectID = '') {

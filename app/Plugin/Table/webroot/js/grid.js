@@ -5,12 +5,13 @@
 - replace .first with .grid-header
 - разобраться с тултипами для фильтра и поля
 */
-Grid = function(config) {
+var Grid = function(config) {
 	var self = this;
 
+	self.config = config;
 	self.container = config.container;
-	var $self = $(config.container);
-
+	$self = $(config.container);
+	
 	self.columns = [];
 	self.data = [];
 	self.settings = {
@@ -49,8 +50,12 @@ Grid = function(config) {
 
 	self.filters = {};
 	self.defaults = {page: 1, sort: '', direction: 'asc', limit: 10};
+	
+	this.getInstance = function() {
+		return self;
+	}
 
-	this.init = function(config) {
+	this.init = function() {
 		self.setData(config.data);
 		self.initDefaults(config.defaults);
 		self.initSettings(config.settings);
@@ -58,8 +63,6 @@ Grid = function(config) {
 		self.initPaging(config.paging);
 		self.initActions(config.actions);
 		self.initFilters(config.filters);
-
-		self.render();
 	}
 
 	this.initColumns = function(columns) {
@@ -314,6 +317,13 @@ Grid = function(config) {
 
 	this.renderTableFilterCell = function(col, val) {
 		var html = '<th>';
+		html+= self.renderFilterCell(col, val);
+		html+= '</th>';
+		return html;
+	}
+	
+	this.renderFilterCell = function(col, val) {
+		var html = '';
 		if (col.showFilter) {
 			if (col.format == 'boolean') {
 				html+= self.renderFilterBoolean(col, val);
@@ -325,7 +335,6 @@ Grid = function(config) {
 				html+= self.renderFilterString(col, val);
 			}
 		}
-		html+= '</th>';
 		return html;
 	}
 	
@@ -360,7 +369,7 @@ Grid = function(config) {
 		// return '<input type="text" class="big-input grid-filter-input" rel="tooltip" name="' + self.getFilterName(col) + '" value="' + val + '" title="* - Any characters">';
 	}
 
-	this.renderFilterSelect = function(col, options, val) {
+	this.renderFilterSelect = function(col, val, options) {
 		var html = '<select class="input-small grid-filter-input grid-filter-select" name="' + self.getFilterName(col) + '">';
 		var selected;
 		for (var i in options) {
@@ -771,6 +780,4 @@ Grid = function(config) {
 		// console.log(self.getURL());
 		window.location.href = self.getURL();
 	}
-                
-	self.init(config);
 }

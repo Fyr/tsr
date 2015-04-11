@@ -111,7 +111,7 @@ class PCTableGridComponent extends Component {
 
 	private function _getColumn($field) {
 		$key = $this->_denormalizeField($field);
-		$label = __(ucfirst(str_replace('_', ' ', $key['field'])));
+		$label = __(ucfirst(str_replace(array('_id', '_'), array('', ' '), $key['field'])));
 		return array('key' => $field, 'label' => $label, 'format' => $this->_getFieldType($field));
 	}
 
