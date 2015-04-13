@@ -54,6 +54,7 @@
 		'vendor/bootstrap/bootstrap-datetimepicker.min',
 		'pace.min',
 		
+		'vendor/jquery/jquery.cookie',
 		'vendor/jquery/jquery.easing',
 		'vendor/jquery/jquery.nanoscroller.min',
 		'vendor/jquery/jquery.easypiechart.min',
@@ -107,7 +108,14 @@ $(document).ready(function() {
 	});
 
 	$('.fileBrowse').styler({fileBrowse: 'Upload image'});
+	
+	$('input[type=checkbox]').styler();
 });
+
+function setLang(lang) {
+	$.cookie('lang', lang, {expires: 365, path: '/'});
+	window.location.reload();
+}
 </script>
 </head>
 <body class="">
@@ -119,7 +127,20 @@ $(document).ready(function() {
 			</div>
 			<ul class="topMenu">
 			    <li><a href="#"><?=$currUser['User']['username']?></a></li>
-			    <li><a href="#" class="not_active">PER</a> | <a href="#">ENG</a></li>
+			    <li>
+<?
+	if ($currLang == 'per') {
+?>
+			    	<a href="javascript:void(0)" class="not_active">PER</a> | <a href="javascript:void(0)" onclick="setLang('eng')">ENG</a>
+<?
+	} else {
+?>
+					<a href="javascript:void(0)" onclick="setLang('per')">PER</a> | <a class="not_active" href="javascript:void(0)">ENG</a>
+<?
+	}
+?>
+			    </li>
+			    	
 			    <li><?=$this->Html->link(__('Logout'), array('plugin' => '', 'controller' => 'Pages', 'action' => 'logout'))?></a></li>
 			</ul>
 		</div>

@@ -1,5 +1,5 @@
 <?
 App::uses('AppModel', 'Model');
 App::uses('UserAppModel', 'User.Model');
-class CampaignCategory extends UserAppModel {
+class InformerCategory extends UserAppModel {
 }

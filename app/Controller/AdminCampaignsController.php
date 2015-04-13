@@ -1,6 +1,8 @@
 <?php
 App::uses('AdminController', 'Controller');
 App::uses('AdminObjectTypeController', 'Controller');
+App::uses('UserAppModel', 'User.Model');
+App::uses('Campaign', 'User.Model');
 class AdminCampaignsController extends AdminObjectTypeController {
     public $name = 'AdminCampaigns';
     public $uses = array('User', 'User.Campaign', 'User.CampaignStatus', 'User.CampaignCategory', 'User.StatService');

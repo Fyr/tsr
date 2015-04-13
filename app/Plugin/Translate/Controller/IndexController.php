@@ -33,7 +33,7 @@ class IndexController extends AdminController {
 		$this->autoRender = false;
 		App::uses('Path', 'Core.Vendor');
 		
-		Configure::write('Config.language', 'rus');
+		Configure::write('Config.language', 'per');
 		$msgFile = '../Locale/'.Configure::read('Config.language').'/LC_MESSAGES/default.';
 		$this->msgFile = $msgFile.'po';
 		file_put_contents($msgFile.'bak', file_get_contents($msgFile.'po'), false);

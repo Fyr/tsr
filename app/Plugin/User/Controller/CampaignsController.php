@@ -32,7 +32,8 @@ class CampaignsController extends UserAppController {
 		$this->set('aStatServiceOptions', $this->StatService->options());
 	}
 	
-	public function stats() {
+	public function stats($id) {
+		$this->set('campaign', $this->Campaign->findById($id));
 		$this->set('aStats', array());
 	}
 }

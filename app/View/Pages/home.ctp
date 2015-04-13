@@ -85,7 +85,7 @@ our widget, we start promoting your content on them sending you new and interest
         
             <div class="container">
                 <a name="features"></a>
-                <h2 class="title text-center"><?=$articles['features']['Page']['title']?></h2>
+                <h2 class="title text-center">Our algorithms power over 400 million article recommendations every day.</h2>
                 <p class="intro text-center">Here are some of the features that make ZergNet a proven tool for audience development.</p>
                 <div class="row item">
                 <figure class="figure  col-md-4 col-sm-12 col-xs-12">

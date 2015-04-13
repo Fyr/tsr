@@ -1,23 +1,30 @@
 <?
-	$title = $this->ObjectType->getTitle('index', 'Advert');
-	$createTitle = $this->ObjectType->getTitle('create', 'Advert');
-	$createUrl = array('controller' => 'Adverts', 'action' => 'edit', 0, $campaign['Campaign']['id']);
+	$title = array();
+	foreach(array('index', 'create', 'edit', 'block') as $action) {
+		$title[$action] = $this->ObjectType->getTitle($action, 'Advert');
+	}
+	
+	$url = array(
+		'campaigns' => array('controller' => 'Campaigns', 'action' => 'index'),
+		'create' => array('controller' => 'Adverts', 'action' => 'edit', 0, $campaign['Campaign']['id'])
+	);
+	$aBreadCrumbs = array(
+		array('label' => $this->ObjectType->getTitle('index', 'Campaign'), 'url' => $url['campaigns']),
+		array('label' => $campaign['Campaign']['domain']),
+		array('label' => $title['index'])
+	);
 ?>
 <div class="row">
 	<div class="col-sm-12">
 		<div class="clearfix">
-			<ol class="breadcrumb">
-				<li><a href="#"><i class="fa fa-home"></i></a></li>
-				<li><a href="#">Form Staffs</a></li>
-				<li class="active">Sample Form</li>
-        	</ol>
-        	<?=$this->element('title', array('class' => 'pull-left', 'title' => $title))?>
-        	<?=$this->element('back', array('url' => array('controller' => 'Campaigns', 'action' => 'index')))?>
+			<?=$this->element('bread_crumbs', compact('aBreadCrumbs'))?>
+        	<?=$this->element('title', array('class' => 'pull-left', 'title' => $title['index']))?>
+        	<?=$this->element('back', array('url' => $url['campaigns']))?>
 		</div>
 		<div class="panel panel-dark">
             <div class="panel-body advertsSearch clearfix">
             	<form action="" method="get">
-				<a href="<?=$this->Html->url($createUrl)?>" class="btn ls-green-btn btn-lg"><i class="fa fa-plus-circle"></i> <?=$createTitle?></a>
+				<a href="<?=$this->Html->url($url['create'])?>" class="btn ls-green-btn btn-lg"><i class="fa fa-plus-circle"></i> <?=$title['create']?></a>
 				<div class="findBlock">
 				<!--
 					<label><?=__('Find')?></label>
@@ -49,10 +56,12 @@
 ?>
 					<?=$this->Form->input('status', $options)?>
 				</div>
+				<!--
 				<div class="dateBlock">
 					<label><?=__('Creation date')?></label>
 					<?=$this->Form->input('created', array('class' => 'form-control datePickerOnly', 'div' => false, 'label' => false))?>
 				</div>
+				-->
 				<button type="submit" class="btn btn-success apply"><?=__('Apply')?></button>
 				<button class="btn btn-default export"><?=__('Export')?></button>
 				</form>
@@ -116,8 +125,8 @@
 					</td>
 					<td class="text-right">0,000</td>
 					<td class="text-center">
-						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'block', $id))?>" class="btn btn-xs btn-warning tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Block')?>"><i class="fa fa-lock"></i></a>
-						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'edit', $id))?>" class="btn btn-xs btn-info tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Edit')?>"><i class="fa fa-edit"></i></a>
+						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'block', $id))?>" class="btn btn-xs btn-warning tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['block']?>"><i class="fa fa-lock"></i></a>
+						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'edit', $id))?>" class="btn btn-xs btn-info tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['edit']?>"><i class="fa fa-edit"></i></a>
 						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'delete', $id))?>" class="btn btn-xs btn-danger tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Delete')?>"><i class="fa fa-times"></i></a>
 					</td>
 				</tr>

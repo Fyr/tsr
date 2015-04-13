@@ -31,6 +31,7 @@
 		'vendor/jquery/jquery.placeholder',
 		'vendor/jquery/jquery.fitvids',
 		'vendor/jquery/jquery.flexslider-min',
+		'vendor/jquery/jquery.cookie',
 		'vendor/bootstrap/bootstrap.min',
 		'vendor/bootstrap/bootstrap-hover-dropdown.min',
 		'back-to-top',
@@ -44,6 +45,12 @@
 	echo $this->fetch('css');
 	echo $this->fetch('script');
 ?>
+<script type="text/javascript">
+function setLang(lang) {
+	$.cookie('lang', lang, {expires: 365, path: '/'});
+	window.location.reload();
+}
+</script>
 </head> 
 
 <body class="home-page">   

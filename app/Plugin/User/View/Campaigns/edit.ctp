@@ -1,10 +1,16 @@
 <?
 	$id = $this->request->data('Campaign.id');
 	$title = $this->ObjectType->getTitle(($id) ? 'edit' : 'create', 'Campaign');
+	$urlIndex = array('controller' => 'Campaigns', 'action' => 'index');
+	$aBreadCrumbs = array(
+		array('label' => $this->ObjectType->getTitle('index', 'Campaign'), 'url' => $urlIndex),
+		array('label' => $title)
+	);
 ?>
 <div class="clearfix">
+	<?=$this->element('bread_crumbs', compact('aBreadCrumbs'))?>
 	<?=$this->element('title', array('class' => 'pull-left', 'title' => $title))?>
-	<?=$this->element('back', array('url' => array('controller' => 'Campaigns', 'action' => 'index')))?>
+	<?=$this->element('back', array('url' => $urlIndex))?>
 </div>
 <div class="panel panel-default">
 	<div class="panel-body">

@@ -7,14 +7,14 @@ class AppController extends Controller {
 		'Auth' => array(
 			'authorize'      => array('Controller'),
 			'loginAction'    => array('plugin' => '', 'controller' => 'Pages', 'action' => 'home', '#' => 'login'),
-			'loginRedirect'  => array('plugin' => 'user', 'controller' => 'Campaigns', 'action' => 'index', '#' => ''),
+			'loginRedirect'  => array('plugin' => 'user', 'controller' => 'Dashboard', 'action' => 'index', '#' => ''),
 			'logoutRedirect' => '/'
 		),
 	);
 	
 	public $paginate;
 	protected $aNavBar = array(), $aBottomLinks = array(), $currMenu = '', $currLink = '', $pageTitle = '', $aBreadCrumbs = array();
-	protected $currUserID, $currUser;
+	protected $currUserID, $currUser, $currLang;
 	
 	public function __construct($request = null, $response = null) {
 		$this->_beforeInit();
@@ -23,7 +23,7 @@ class AppController extends Controller {
 	}
 	
 	protected function _beforeInit() {
-	    $this->helpers = array_merge(array('Html', 'Form', 'Paginator', 'Media', 'ArticleVars'), $this->helpers);
+	    $this->helpers = array_merge(array('Html', 'Form', 'Paginator', 'Media', 'ArticleVars', 'ObjectType'), $this->helpers);
 	}
 
 	protected function _afterInit() {
@@ -53,11 +53,18 @@ class AppController extends Controller {
 		$this->currMenu = $this->_getCurrMenu();
 	    $this->currLink = $this->currMenu;
 	    
+	    $this->_initLang();
+	    
 	    $this->Auth->allow(array('home', 'view'));
 	    if ($this->Auth->loggedIn()) {
 			$this->currUserID = $this->Auth->user('id');
 			$this->currUser = $this->User->findById($this->currUserID);
 		}
+	}
+	
+	protected function _initLang() {
+		$this->currLang = (isset($_COOKIE['lang']) && $_COOKIE['lang'] == 'per') ? 'per' : 'eng';
+		Configure::write('Config.language', $this->currLang);
 	}
 	
 	protected function _getCurrMenu() {
@@ -89,6 +96,7 @@ class AppController extends Controller {
 	
 	protected function beforeRenderLayout() {
 		$this->set('currUser', $this->currUser);
+		$this->set('currLang', $this->currLang);
 	}
 	
 	/**

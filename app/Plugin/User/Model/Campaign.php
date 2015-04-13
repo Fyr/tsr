@@ -1,5 +1,6 @@
 <?
 App::uses('AppModel', 'Model');
+App::uses('UserAppModel', 'User.Model');
 class Campaign extends UserAppModel {
 	// public $belongsTo = array('User.CampaignCategory');
 	

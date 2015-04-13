@@ -1,0 +1,456 @@
+msgid "Invalid username or password, try again"
+msgstr "per:Invalid username or password, try again!"
+
+msgid "Content"
+msgstr "per:Content!"
+
+msgid "Static pages"
+msgstr "per:Static pages!"
+
+msgid "News"
+msgstr "per:News!"
+
+msgid "Articles"
+msgstr "per:Articles!"
+
+msgid "Campaigns"
+msgstr "per:Campaigns!"
+
+msgid "Adverts"
+msgstr "per:Adverts!"
+
+msgid "Informers"
+msgstr "per:Informers!"
+
+msgid "Campaign categories"
+msgstr "per:Campaign categories!"
+
+msgid "Advert categories"
+msgstr "per:Advert categories!"
+
+msgid "Informer categories"
+msgstr "per:Informer categories!"
+
+msgid "Users"
+msgstr "per:Users!"
+
+msgid "Settings"
+msgstr "per:Settings!"
+
+msgid "System"
+msgstr "per:System!"
+
+msgid "Home"
+msgstr "per:Home!"
+
+msgid "Products catalogue"
+msgstr "per:Products catalogue!"
+
+msgid "About us"
+msgstr "per:About us!"
+
+msgid "Contacts"
+msgstr "per:Contacts!"
+
+msgid "Home page"
+msgstr "per:Home page!"
+
+msgid "Your password and its confirmation do not match"
+msgstr "per:Your password and its confirmation do not match!"
+
+msgid "Published"
+msgstr "per:Published!"
+
+msgid "Featured"
+msgstr "per:Featured!"
+
+msgid "You must log in to access this page"
+msgstr "per:You must log in to access this page!"
+
+msgid "Your session has been expired. Please, relogin to perform this action"
+msgstr "per:Your session has been expired. Please, relogin to perform this action!"
+
+msgid "Save"
+msgstr "per:Save!"
+
+msgid "Back"
+msgstr "per:Back!"
+
+msgid "Apply"
+msgstr "per:Apply!"
+
+msgid "Tech.params"
+msgstr "per:Tech.params!"
+
+msgid "Add record"
+msgstr "per:Add record!"
+
+msgid "Show filter settings"
+msgstr "per:Show filter settings!"
+
+msgid "Edit record"
+msgstr "per:Edit record!"
+
+msgid "Delete record"
+msgstr "per:Delete record!"
+
+msgid "Delete checked records"
+msgstr "per:Delete checked records!"
+
+msgid "Your advert has been saved"
+msgstr "per:Your advert has been saved!"
+
+msgid "Your advert has been deleted"
+msgstr "per:Your advert has been deleted!"
+
+msgid "Your advert has been blocked"
+msgstr "per:Your advert has been blocked!"
+
+msgid "Your campaign has been saved"
+msgstr "per:Your campaign has been saved!"
+
+msgid "Your informer has been saved"
+msgstr "per:Your informer has been saved!"
+
+msgid "Your informer has been deleted"
+msgstr "per:Your informer has been deleted!"
+
+msgid "Moderation"
+msgstr "per:Moderation!"
+
+msgid "Rejected"
+msgstr "per:Rejected!"
+
+msgid "Active"
+msgstr "per:Active!"
+
+msgid "Blocked"
+msgstr "per:Blocked!"
+
+msgid "Google Analitics"
+msgstr "per:Google Analitics!"
+
+msgid "LiveInternet"
+msgstr "per:LiveInternet!"
+
+msgid "Yandex.Metrika"
+msgstr "per:Yandex.Metrika!"
+
+msgid "Link"
+msgstr "per:Link!"
+
+msgid "Title"
+msgstr "per:Title!"
+
+msgid "%s chars left"
+msgstr "per:%s chars left!"
+
+msgid "Description"
+msgstr "per:Description!"
+
+msgid "Image"
+msgstr "per:Image!"
+
+msgid "Category"
+msgstr "per:Category!"
+
+msgid "Find"
+msgstr "per:Find!"
+
+msgid "Any category"
+msgstr "per:Any category!"
+
+msgid "Status"
+msgstr "per:Status!"
+
+msgid "Any status"
+msgstr "per:Any status!"
+
+msgid "Creation date"
+msgstr "per:Creation date!"
+
+msgid "Export"
+msgstr "per:Export!"
+
+msgid "Domain"
+msgstr "per:Domain!"
+
+msgid "Select a campaign category"
+msgstr "per:Select a campaign category!"
+
+msgid "Statistics service"
+msgstr "per:Statistics service!"
+
+msgid "Select a service of statistics"
+msgstr "per:Select a service of statistics!"
+
+msgid "Stats.type"
+msgstr "per:Stats.type!"
+
+msgid "Opened"
+msgstr "per:Opened!"
+
+msgid "Closed"
+msgstr "per:Closed!"
+
+msgid "Site mirrors"
+msgstr "per:Site mirrors!"
+
+msgid "Each server on a new line"
+msgstr "per:Each server on a new line!"
+
+msgid "Comment"
+msgstr "per:Comment!"
+
+msgid "Filter by"
+msgstr "per:Filter by!"
+
+msgid "Out"
+msgstr "per:Out!"
+
+msgid "Factor"
+msgstr "per:Factor!"
+
+msgid "Actions"
+msgstr "per:Actions!"
+
+msgid "Date"
+msgstr "per:Date!"
+
+msgid "Dashboard"
+msgstr "per:Dashboard!"
+
+msgid "Categories"
+msgstr "per:Categories!"
+
+msgid "Widget settings"
+msgstr "per:Widget settings!"
+
+msgid "Widget name"
+msgstr "per:Widget name!"
+
+msgid "Text settings"
+msgstr "per:Text settings!"
+
+msgid "Borders"
+msgstr "per:Borders!"
+
+msgid "Show code"
+msgstr "per:Show code!"
+
+msgid "Logout"
+msgstr "per:Logout!"
+
+msgid "User name"
+msgstr "per:User name!"
+
+msgid "Password"
+msgstr "per:Password!"
+
+msgid "Remember me"
+msgstr "per:Remember me!"
+
+msgid "Login"
+msgstr "per:Login!"
+
+msgid "Any user"
+msgstr "per:Any user!"
+
+msgid "Print selected records"
+msgstr "per:Print selected records!"
+
+msgid "Edit section"
+msgstr "per:Edit section!"
+
+msgid "Create section"
+msgstr "per:Create section!"
+
+msgid "Sections"
+msgstr "per:Sections!"
+
+msgid "Slider"
+msgstr "per:Slider!"
+
+msgid "Utils"
+msgstr "per:Utils!"
+
+msgid "Generate static labels"
+msgstr "per:Generate static labels!"
+
+msgid "Clean image cache"
+msgstr "per:Clean image cache!"
+
+msgid "Processing query..."
+msgstr "per:Processing query...!"
+
+msgid "Subcategory"
+msgstr "per:Subcategory!"
+
+msgid "Title rus"
+msgstr "per:Title rus!"
+
+msgid "Detail num"
+msgstr "per:Detail num!"
+
+msgid "Motor"
+msgstr "per:Motor!"
+
+msgid "Slug"
+msgstr "per:Slug!"
+
+msgid "On stock"
+msgstr "per:On stock!"
+
+msgid "CMS Development"
+msgstr "per:CMS Development!"
+
+msgid "Admin Home Page"
+msgstr "per:Admin Home Page!"
+
+msgid "Open Home page of Front-end in a new tab"
+msgstr "per:Open Home page of Front-end in a new tab!"
+
+msgid "Go to Site"
+msgstr "per:Go to Site!"
+
+msgid "Log out"
+msgstr "per:Log out!"
+
+msgid "Administrator"
+msgstr "per:Administrator!"
+
+msgid "Regular user"
+msgstr "per:Regular user!"
+
+msgid "News categories"
+msgstr "per:News categories!"
+
+msgid "Article categories"
+msgstr "per:Article categories!"
+
+msgid "Article subcategories"
+msgstr "per:Article subcategories!"
+
+msgid "Product categories"
+msgstr "per:Product categories!"
+
+msgid "Create Article"
+msgstr "per:Create Article!"
+
+msgid "Create Static page"
+msgstr "per:Create Static page!"
+
+msgid "Create News article"
+msgstr "per:Create News article!"
+
+msgid "Create News category"
+msgstr "per:Create News category!"
+
+msgid "Create Article category"
+msgstr "per:Create Article category!"
+
+msgid "Create Article subcategory"
+msgstr "per:Create Article subcategory!"
+
+msgid "Create Subcategory"
+msgstr "per:Create Subcategory!"
+
+msgid "Create Product"
+msgstr "per:Create Product!"
+
+msgid "Create tech.param"
+msgstr "per:Create tech.param!"
+
+msgid "Create User"
+msgstr "per:Create User!"
+
+msgid "Create Product category"
+msgstr "per:Create Product category!"
+
+msgid "Create campaign"
+msgstr "per:Create campaign!"
+
+msgid "Create category"
+msgstr "per:Create category!"
+
+msgid "Create advert"
+msgstr "per:Create advert!"
+
+msgid "Create informer"
+msgstr "per:Create informer!"
+
+msgid "Edit Article"
+msgstr "per:Edit Article!"
+
+msgid "Edit Static page"
+msgstr "per:Edit Static page!"
+
+msgid "Edit News article"
+msgstr "per:Edit News article!"
+
+msgid "Edit News category"
+msgstr "per:Edit News category!"
+
+msgid "Edit Article category"
+msgstr "per:Edit Article category!"
+
+msgid "Edit Article subcategory"
+msgstr "per:Edit Article subcategory!"
+
+msgid "Edit Subcategory"
+msgstr "per:Edit Subcategory!"
+
+msgid "Edit Product"
+msgstr "per:Edit Product!"
+
+msgid "Edit tech.param"
+msgstr "per:Edit tech.param!"
+
+msgid "Edit User"
+msgstr "per:Edit User!"
+
+msgid "Edit Product category"
+msgstr "per:Edit Product category!"
+
+msgid "Edit campaign"
+msgstr "per:Edit campaign!"
+
+msgid "Edit category"
+msgstr "per:Edit category!"
+
+msgid "Edit advert"
+msgstr "per:Edit advert!"
+
+msgid "Informer settings"
+msgstr "per:Informer settings!"
+
+msgid "View Article"
+msgstr "per:View Article!"
+
+msgid "View News article"
+msgstr "per:View News article!"
+
+msgid "Campaign statistics"
+msgstr "per:Campaign statistics!"
+
+msgid "Informer statistics"
+msgstr "per:Informer statistics!"
+
+msgid "Block this advert"
+msgstr "per:Block this advert!"
+
+msgid "How It Works"
+msgstr "per:How It Works!"
+
+msgid "Features"
+msgstr "per:Features!"
+
+msgid "Clients"
+msgstr "per:Clients!"
+
+msgid "Sign in"
+msgstr "per:Sign in!"
+
+msgid "Sign up"
+msgstr "per:Sign up!"
+

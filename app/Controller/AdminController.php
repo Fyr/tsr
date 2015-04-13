@@ -20,8 +20,10 @@ class AdminController extends AppController {
 			'Campaigns' => array('label' => __('Campaigns'), 'href' => '', 'submenu' => array(
 				array('label' => __('Campaigns'), 'href' => array('controller' => 'AdminCampaigns', 'action' => 'index')),
 				array('label' => __('Adverts'), 'href' => array('controller' => 'AdminAdverts', 'action' => 'index')),
+				array('label' => __('Informers'), 'href' => array('controller' => 'AdminInformers', 'action' => 'index')),
 				array('label' => __('Campaign categories'), 'href' => array('controller' => 'AdminCampaignCategories', 'action' => 'index')),
 				array('label' => __('Advert categories'), 'href' => array('controller' => 'AdminAdvertCategories', 'action' => 'index')),
+				array('label' => __('Informer categories'), 'href' => array('controller' => 'AdminInformerCategories', 'action' => 'index')),
 			)),
 			'Users' => array('label' => __('Users'), 'href' => array('controller' => 'AdminUsers', 'action' => 'index')),
 			'Settings' => array('label' => __('Settings'), 'href' => '', 'submenu' => array(

@@ -1,0 +1,1 @@
+<a href="<?=$this->Html->url($url)?>" class="btn btn-xs <?=$class?> tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$tooltip?>"><i class="fa <?=$icon?>"></i></a>

@@ -1,5 +1,6 @@
 <?
 App::uses('AppModel', 'Model');
+App::uses('UserAppModel', 'User.Model');
 class AdvertStatus extends UserAppModel {
 	public $useTable = false;
 	

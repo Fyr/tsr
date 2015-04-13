@@ -21,6 +21,7 @@ class ObjectTypeHelper extends AppHelper {
                 'CampaignCategory' => __('Campaign categories'),
                 'Advert' => __('Adverts'),
                 'AdvertCategory' => __('Advert categories'),
+                'InformerCategory' => __('Informer categories'),
                 'Informer' => __('Informers'),
             ), 
             'create' => array(
@@ -40,6 +41,7 @@ class ObjectTypeHelper extends AppHelper {
                 'CampaignCategory' => __('Create category'),
                 'Advert' => __('Create advert'),
                 'AdvertCategory' => __('Create category'),
+                'InformerCategory' => __('Create category'),
                 'Informer' => __('Create informer'),
             ),
             'edit' => array(
@@ -59,7 +61,8 @@ class ObjectTypeHelper extends AppHelper {
                 'CampaignCategory' => __('Edit category'),
                 'Advert' => __('Edit advert'),
                 'AdvertCategory' => __('Edit category'),
-                'Informer' => __('Edit informer'),
+                'InformerCategory' => __('Edit category'),
+                'Informer' => __('Informer settings'),
             ),
             'view' => array(
             	'Article' => __('View Article'),
@@ -67,6 +70,10 @@ class ObjectTypeHelper extends AppHelper {
             ),
             'stats' => array(
             	'Campaign' => __('Campaign statistics'),
+            	'Informer' => __('Informer statistics'),
+            ),
+            'block' => array(
+            	'Advert' => __('Block this advert')
             )
         );
         return $Titles;

@@ -8892,3 +8892,8 @@ a:focus { outline-offset: 0; outline: none;}
 	.dateTime .add-on {  line-height: 27px; height: 32px; font-size: 18px; color: #616161; position: absolute; right: 0; top: 0; padding-right: 9px;}
 	.dateTime input { font-size: 14px;  border: none; -webkit-box-shadow: none; box-shadow: none; color: #616161; padding: 0; resize: none; height: 32px; padding-right: 40px; padding-left: 10px; width: 150px;}
 	.dateTime input:focus { -webkit-box-shadow: none; box-shadow: none; outline: none;}
+
+
+.tab-content .panel-group .collapsed .panel-title  .fa-caret-down:before { content: "\f0da"; }
+.tab-content .panel-group .panel-title a { text-decoration: none;}
+.tab-content .panel-group .panel-heading { cursor: pointer}

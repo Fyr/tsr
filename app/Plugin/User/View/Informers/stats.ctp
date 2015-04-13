@@ -1,18 +1,19 @@
 <?
-	// $this->Html->script('demo.morris', array('inline' => false));
 	$this->Html->script(array('demo.morris'), array('inline' => false));
 	
 	$title = array();
-	foreach(array('index', 'create', 'stats') as $action) {
-		$title[$action] = $this->ObjectType->getTitle($action, 'Campaign');
+	foreach(array('index', 'create', 'edit', 'stats') as $action) {
+		$title[$action] = $this->ObjectType->getTitle($action, 'Informer');
 	}
 	$url = array(
-		'index' => array('controller' => 'Campaigns', 'action' => 'index'),
-		'create' => array('controller' => 'Campaigns', 'action' => 'edit')
+		'campaigns' => array('controller' => 'Campaigns', 'action' => 'index'),
+		'index' => array('controller' => 'Informers', 'action' => 'index', $campaign['Campaign']['id']),
+		'create' => array('controller' => 'Informers', 'action' => 'edit', 0, $campaign['Campaign']['id'])
 	);
 	$aBreadCrumbs = array(
-		array('label' => $title['index'], 'url' => $url['index']),
+		array('label' => $this->ObjectType->getTitle('index', 'Campaign'), 'url' => $url['campaigns']),
 		array('label' => $campaign['Campaign']['domain']),
+		array('label' => $title['index'], 'url' => $url['index']),
 		array('label' => $title['stats'])
 	);
 ?>
@@ -20,7 +21,7 @@
 	<div class="col-sm-12 mainFilter">
 		<div class="clearfix">
 			<?=$this->element('bread_crumbs', compact('aBreadCrumbs'))?>
-			<?=$this->element('title', array('class' => 'pull-left', 'title' => $title['stats']))?>
+			<?=$this->element('title', array('class' => 'pull-left', 'title' => $title))?>
 			<?=$this->element('back', array('url' => $url['index']))?>
 		</div>
 		<div class="panel panel-dark">
