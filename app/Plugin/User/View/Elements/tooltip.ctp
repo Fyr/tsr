@@ -1,0 +1,1 @@
+<i data-original-title="<?=$title?>" data-toggle="tooltip" data-placement="top" class="fa fa-info-circle pull-right tooltipLink"></i>

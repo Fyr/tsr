@@ -34,13 +34,14 @@ $(document).ready(function(){
 	aStatusOptions = <?=json_encode($aStatusOptions)?>;
 	aCategoryOptions = <?=json_encode($aCategoryOptions)?>;
 	aUserOptions = <?=json_encode($aUserOptions)?>;
-	console.log(aUserOptions);
 	grid_Campaign.renderTableFilterCell = function(col, val) {
 		var html;
 		if (col.key == 'Campaign.status') {
 			html = grid_Campaign.renderFilterSelect(col, val, aStatusOptions);
-		} else if (col.key == 'Campaign.campaign_category_id') {
+		} else if (col.key == 'Domain.site_category_id') {
 			html = grid_Campaign.renderFilterSelect(col, val, aCategoryOptions);
+		} else if (col.key == 'Domain.user_id') {
+			html = grid_Campaign.renderFilterSelect(col, val, aUserOptions);
 		} else {
 			html = grid_Campaign.renderFilterCell(col, val);
 		}
@@ -51,9 +52,9 @@ $(document).ready(function(){
 		var html = '';
 		if (col.key == 'Campaign.status') {
 			html = aStatusOptions[val];
-		} else if (col.key == 'Campaign.campaign_category_id') {
+		} else if (col.key == 'Domain.site_category_id') {
 			html = aCategoryOptions[val];
-		} else if (col.key == 'Campaign.user_id') {
+		} else if (col.key == 'Domain.user_id') {
 			html = aUserOptions[val];
 		} else {
 			html = grid_Campaign.renderCell(val, col, rowData);

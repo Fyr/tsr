@@ -31,6 +31,13 @@ class AjaxController extends PAjaxController {
 			$crop = (is_array($crop)) ? implode(',', $crop): $crop;
 		}
 		
+		if ($object_type == 'Advert') {
+			$aMedia = $this->Media->getObjectList($object_type, $object_id);
+			foreach($aMedia as $media) {
+				$this->Media->delete($media['Media']['id']);
+			}
+		}
+		
 		$data = compact('media_type', 'object_type', 'object_id', 'tmp_name', 'file', 'ext', 'orig_fname', 'crop');
 		$media_id = $this->Media->uploadMedia($data);
 		

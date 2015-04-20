@@ -5,6 +5,6 @@ class DashboardController extends UserAppController {
 	public $name = 'Dashboard';
 	
 	public function index() {
-		return $this->redirect(array('plugin' => 'user', 'controller' => 'Campaign', 'action' => 'index'));
+		return $this->redirect(array('plugin' => 'user', 'controller' => 'Campaigns', 'action' => 'index'));
 	}
 }

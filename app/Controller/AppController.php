@@ -3,7 +3,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 	public $uses = array('User', 'Media.Media');
 	public $components = array(
-		'Session',
+		'Session', 'RequestHandler',
 		'Auth' => array(
 			'authorize'      => array('Controller'),
 			'loginAction'    => array('plugin' => '', 'controller' => 'Pages', 'action' => 'home', '#' => 'login'),

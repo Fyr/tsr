@@ -12,7 +12,7 @@
 	);
 	$aBreadCrumbs = array(
 		array('label' => $title['index'], 'url' => $url['index']),
-		array('label' => $campaign['Campaign']['domain']),
+		array('label' => $campaign['Campaign']['title']),
 		array('label' => $title['stats'])
 	);
 ?>

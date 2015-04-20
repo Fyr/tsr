@@ -2,12 +2,12 @@
 App::uses('AdminController', 'Controller');
 App::uses('AdminObjectTypeController', 'Controller');
 App::uses('UserAppModel', 'User.Model');
-App::uses('Informer', 'User.Model');
-class AdminInformersController extends AdminObjectTypeController {
-    public $name = 'AdminInformers';
-    public $uses = array('User.Informer', 'User.Campaign', 'User.InformerStatus', 'User.InformerCategory');
+App::uses('Widget', 'User.Model');
+class AdminWidgetsController extends AdminObjectTypeController {
+    public $name = 'AdminWidgets';
+    public $uses = array('User.Widget', 'User.Campaign', 'User.WidgetStatus', 'User.WidgetCategory');
     
-    protected $objectType = 'Informer';
+    protected $objectType = 'Widget';
     
     public function index() {
     	$this->paginate = array(
@@ -16,19 +16,19 @@ class AdminInformersController extends AdminObjectTypeController {
     	$this->PCTableGrid->paginate($this->objectType);
     	
     	$this->set('aCampaignOptions', $this->Campaign->options());
-    	$this->set('aStatusOptions', $this->InformerStatus->options());
+    	$this->set('aStatusOptions', $this->WidgetStatus->options());
     	// $this->set('aCategoryOptions', $this->AdvertCategory->getObjectOptions());
     }
     
     public function edit($id = 0) {
     	$this->set('aCampaignOptions', $this->Campaign->options());
-    	$this->set('aStatusOptions', $this->InformerStatus->options());
+    	$this->set('aStatusOptions', $this->WidgetStatus->options());
 		
     	$this->fieldSet = array(
     		'id' => array('hidden'),
     		'campaign_id' => array('options' => $this->Campaign->options()),
-    		'status' => array('options' => $this->InformerStatus->options()),
-    		// 'advert_category_id' => array('options' => $this->InformerCategory->getObjectOptions()),
+    		'status' => array('options' => $this->WidgetStatus->options()),
+    		// 'advert_category_id' => array('options' => $this->WidgetCategory->getObjectOptions()),
     		'title' => array(),
     	);
     	

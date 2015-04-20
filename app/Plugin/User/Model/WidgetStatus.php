@@ -1,7 +1,7 @@
 <?
 App::uses('AppModel', 'Model');
 App::uses('UserAppModel', 'User.Model');
-class InformerStatus extends UserAppModel {
+class WidgetStatus extends UserAppModel {
 	public $useTable = false;
 	
 	const MODERATION = 1;

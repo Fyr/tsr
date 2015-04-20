@@ -25,6 +25,7 @@
     ));
     
     $aStatusOptions = Hash::merge(array(0 => '- '.__('Any status').' -'), $aStatusOptions);
+    $aCampaignOptions = Hash::merge(array(0 => '- '.__('Any campaign').' -'), $aCampaignOptions);
     // $aCategoryOptions = Hash::merge(array(0 => '- '.__('Any category').' -'), $aCategoryOptions);
 ?>
 <script type="text/javascript">
@@ -32,31 +33,31 @@ var aStatusOptions, aCampaignOptions;
 $(document).ready(function(){
 	aStatusOptions = <?=json_encode($aStatusOptions)?>;
 	aCampaignOptions = <?=json_encode($aCampaignOptions)?>;
-	grid_Informer.renderTableFilterCell = function(col, val) {
+	grid_Widget.renderTableFilterCell = function(col, val) {
 		var html;
-		if (col.key == 'Informer.status') {
-			html = grid_Informer.renderFilterSelect(col, val, aStatusOptions);
-		} else if (col.key == 'Informer.campaign_id') {
-			html = grid_Informer.renderFilterSelect(col, val, aCampaignOptions);
+		if (col.key == 'Widget.status') {
+			html = grid_Widget.renderFilterSelect(col, val, aStatusOptions);
+		} else if (col.key == 'Widget.campaign_id') {
+			html = grid_Widget.renderFilterSelect(col, val, aCampaignOptions);
 		} else {
-			html = grid_Informer.renderFilterCell(col, val);
+			html = grid_Widget.renderFilterCell(col, val);
 		}
 		return '<th>' + html + '</th>';
 	}
 	
-	grid_Informer.renderTableCell = function(val, col, rowData) {
+	grid_Widget.renderTableCell = function(val, col, rowData) {
 		var html = '';
-		if (col.key == 'Informer.status') {
+		if (col.key == 'Widget.status') {
 			html = aStatusOptions[val];
-		} else if (col.key == 'Informer.campaign_id') {
+		} else if (col.key == 'Widget.campaign_id') {
 			html = aCampaignOptions[val];
 		} else {
-			html = grid_Informer.renderCell(val, col, rowData);
+			html = grid_Widget.renderCell(val, col, rowData);
 		}
 		return '<td>' + html + '</td>';
 	}
-	grid_Informer.init();
-	grid_Informer.render();
+	grid_Widget.init();
+	grid_Widget.render();
 });
 
 </script>

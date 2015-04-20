@@ -3,16 +3,16 @@
 	
 	$title = array();
 	foreach(array('index', 'create', 'edit', 'stats') as $action) {
-		$title[$action] = $this->ObjectType->getTitle($action, 'Informer');
+		$title[$action] = $this->ObjectType->getTitle($action, 'Widget');
 	}
 	$url = array(
 		'campaigns' => array('controller' => 'Campaigns', 'action' => 'index'),
-		'index' => array('controller' => 'Informers', 'action' => 'index', $campaign['Campaign']['id']),
-		'create' => array('controller' => 'Informers', 'action' => 'edit', 0, $campaign['Campaign']['id'])
+		'index' => array('controller' => 'Widgets', 'action' => 'index', $campaign['Campaign']['id']),
+		'create' => array('controller' => 'Widgets', 'action' => 'edit', 0, $campaign['Campaign']['id'])
 	);
 	$aBreadCrumbs = array(
 		array('label' => $this->ObjectType->getTitle('index', 'Campaign'), 'url' => $url['campaigns']),
-		array('label' => $campaign['Campaign']['domain']),
+		array('label' => $campaign['Campaign']['title']),
 		array('label' => $title['index'], 'url' => $url['index']),
 		array('label' => $title['stats'])
 	);
@@ -21,7 +21,7 @@
 	<div class="col-sm-12 mainFilter">
 		<div class="clearfix">
 			<?=$this->element('bread_crumbs', compact('aBreadCrumbs'))?>
-			<?=$this->element('title', array('class' => 'pull-left', 'title' => $title))?>
+			<?=$this->element('title', array('class' => 'pull-left', 'title' => $title['stats']))?>
 			<?=$this->element('back', array('url' => $url['index']))?>
 		</div>
 		<div class="panel panel-dark">

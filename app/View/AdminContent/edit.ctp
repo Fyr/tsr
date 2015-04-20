@@ -16,7 +16,7 @@
     echo $this->Form->hidden('Seo.id', array('value' => Hash::get($this->request->data, 'Seo.id')));
     $aTabs = array(
         'General' => $this->element('/AdminContent/admin_edit_'.$objectType),
-		'Text' => $this->element('Article.edit_body'),
+		'Text' => ($this->request->data('Article.slug') == 'home') ? $this->Form->input('Article.body', array('type' => 'textarea', 'label' => false, 'div' => false, 'style' => 'height: 400px; width: 98%;')) : $this->element('Article.edit_body'),
 		'SEO' => $this->element('Seo.edit')
     );
     if ($id) {
@@ -27,8 +27,3 @@
     echo $this->PHForm->end();
 ?>
 </div>
-<script type="text/javascript">
-$(document).ready(function(){
-	// var $grid = $('#grid_FormField');
-});
-</script>

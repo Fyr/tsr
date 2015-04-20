@@ -15,27 +15,54 @@
 <div class="panel panel-default">
 	<div class="panel-body">
 		<?=$this->Form->create('Campaign', array('class' => 'form-horizontal ls_form'))?>
-			<?=$this->Form->hidden('id')?>
-		<!--form enctype="multipart/form-data" class="form-horizontal ls_form" action=""-->
-			<div class="row ls_divider">
-				<label class="col-md-2 control-label"><?=__('Domain')?></label>
+			<?=$this->Form->hidden('Domain.id')?>
+			<?=$this->Form->hidden('Campaign.id')?>
+			<div>
+				<h5><?=__('Your site')?></h5>
+			</div>
+			<div class="row">
+				<label class="col-md-2 control-label"><?=__('Domain')?><!--i data-original-title="<?=__('Input new domain or choose existing one')?>" data-toggle="tooltip" data-placement="top" class="fa fa-info-circle pull-right tooltipLink"></i--></label>
 				<div class="col-md-10 ls-group-input">
-					<?=$this->Form->input('domain', array('class' => 'form-control', 'label' => false, 'div' => false))?>
+					<?=$this->Form->input('Domain.domain', array('class' => 'form-control', 'label' => false, 'div' => false, 'placeholer' => 'http://yournewdomain.com'))?>
+					
+<?
+/*
+	if (!$id) {
+?>
+					<div class="row">
+						<div class="col-md-6">
+							<?=$this->Form->input('Domain.domain', array('class' => 'form-control', 'label' => false, 'div' => false, 'placeholer' => 'http://yournewdomain.com'))?>
+						</div>
+<?
+	}
+?>
+						<div class="col-md-6">
+<?
+	$aDomainOptions = Hash::merge(array(0 => '- '.__('New domain').' -'), $aDomainOptions);
+?>
+							<?=$this->Form->input('Campaign.domain_id', array('options' => $aDomainOptions, 'class' => 'form-control selectize', 'label' => false, 'div' => false))?>
+						</div>
+					</div>
+
+<?
+	*/
+?>
+					
 				</div>
 			</div>
-			<div class="row ls_divider">
-				<label class="col-md-2 control-label"><?=__('Category')?> <i data-original-title="<?=__('Select a campaign category')?>" data-toggle="tooltip" data-placement="top" class="fa fa-info-circle pull-right tooltipLink"></i></label>
+			<div class="row">
+				<label class="col-md-2 control-label"><?=__('Site category')?> <i data-original-title="<?=__('Select site category')?>" data-toggle="tooltip" data-placement="top" class="fa fa-info-circle pull-right tooltipLink"></i></label>
 				<div class="col-md-10 ls-group-input">
-					<?=$this->Form->input('campaign_category_id', array('options' => $aCategoryOptions, 'class' => 'form-control selectize', 'label' => false, 'div' => false))?>
+					<?=$this->Form->input('Domain.site_category_id', array('options' => $aCategoryOptions, 'class' => 'form-control selectize', 'label' => false, 'div' => false))?>
 				</div>
 			</div>
-			<div class="row ls_divider">
+			<div class="row">
 				<label class="col-md-2 control-label"><?=__('Statistics service')?> <i data-original-title="<?=__('Select a service of statistics')?>" data-toggle="tooltip" data-placement="top" class="fa fa-info-circle pull-right tooltipLink"></i></label>
 				<div class="col-md-10 ls-group-input">
-					<?=$this->Form->input('stat_service_id', array('options' => $aStatServiceOptions, 'class' => 'form-control selectize', 'label' => false, 'div' => false))?>
+					<?=$this->Form->input('Domain.stat_service_id', array('options' => $aStatServiceOptions, 'class' => 'form-control selectize', 'label' => false, 'div' => false))?>
 				</div>
 			</div>
-			<div class="row ls_divider">
+			<div class="row">
 				<label class="col-md-2 control-label"><?=__('Stats.type')?></label>
 				<div class="col-md-5 ls-group-input">
 					<ul class="nav nav-tabs nav-justified icon-tab">
@@ -44,12 +71,12 @@
 					</ul>
 					<div class="tab-content tab-border">
 						<div class="tab-pane fade in active" id="opened">
-							<?=$this->Form->input('stat_url', array('class' => 'form-control', 'label' => false, 'div' => false, 'placeholder' => 'http://yourdomain.com'))?>
+							<?=$this->Form->input('Domain.stat_url', array('class' => 'form-control', 'label' => false, 'div' => false, 'placeholder' => 'http://yourdomain.com'))?>
 						</div>
 						<div class="tab-pane fade" id="closed">
-							<?=$this->Form->input('login', array('class' => 'form-control', 'div' => false))?>
+							<?=$this->Form->input('Domain.login', array('class' => 'form-control', 'div' => false))?>
 							<br />
-							<?=$this->Form->input('password', array('class' => 'form-control', 'div' => false))?>
+							<?=$this->Form->input('Domain.password', array('class' => 'form-control', 'div' => false))?>
 						</div>
 					</div>
 				</div>
@@ -57,13 +84,22 @@
 			<div class="row ls_divider">
 				<label class="col-md-2 control-label"><?=__('Site mirrors')?> <i data-original-title="<?=__('Each server on a new line')?>" data-toggle="tooltip" data-placement="top" class="fa fa-info-circle pull-right tooltipLink"></i></label>
 				<div class="col-md-10 ls-group-input">
-					<?=$this->Form->input('mirrors', array('class' => 'form-control', 'label' => false, 'div' => false))?>
+					<?=$this->Form->input('Domain.mirrors', array('class' => 'form-control', 'label' => false, 'div' => false))?>
 				</div>
 			</div>
-			<div class="row ls_divider last">
+			<div>
+				<h5><?=__('Campaign info')?></h5>
+			</div>
+			<div class="row">
+				<label class="col-md-2 control-label"><?=__('Campaign title')?></label>
+				<div class="col-md-10 ls-group-input">
+					<?=$this->Form->input('Campaign.title', array('class' => 'form-control', 'label' => false, 'div' => false))?>
+				</div>
+			</div>
+			<div class="row last">
 				<label class="col-md-2 control-label"><?=__('Comment')?></label>
 				<div class="col-md-10 ls-group-input">
-					<?=$this->Form->input('comment', array('class' => 'form-control', 'label' => false, 'div' => false))?>
+					<?=$this->Form->input('Campaign.comment', array('class' => 'form-control', 'label' => false, 'div' => false))?>
 				</div>
 			</div>
 			<div class="row">
@@ -72,7 +108,6 @@
 					<button type="submit" class="btn ls-green-btn btn-lg"><?=__('Save')?></button>
 				</div>
 			</div>
-		<!--/form-->
 		<?=$this->Form->end()?>
 	</div>
 </div>

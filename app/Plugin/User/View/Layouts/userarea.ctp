@@ -109,7 +109,8 @@ $(document).ready(function() {
 
 	$('.fileBrowse').styler({fileBrowse: 'Upload image'});
 	
-	$('input[type=checkbox]').styler();
+	// $('input[type=checkbox]').styler();
+	
 });
 
 function setLang(lang) {

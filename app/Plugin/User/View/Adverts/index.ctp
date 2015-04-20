@@ -1,6 +1,6 @@
 <?
 	$title = array();
-	foreach(array('index', 'create', 'edit', 'block') as $action) {
+	foreach(array('index', 'create', 'edit', 'block', 'unblock') as $action) {
 		$title[$action] = $this->ObjectType->getTitle($action, 'Advert');
 	}
 	
@@ -10,7 +10,7 @@
 	);
 	$aBreadCrumbs = array(
 		array('label' => $this->ObjectType->getTitle('index', 'Campaign'), 'url' => $url['campaigns']),
-		array('label' => $campaign['Campaign']['domain']),
+		array('label' => $campaign['Campaign']['title']),
 		array('label' => $title['index'])
 	);
 ?>
@@ -76,12 +76,12 @@
 			<thead>
 				<tr>
 					<th width="3%"><input type="checkbox" /></th>
-					<th width="15%">ID / Status</th>
-					<th width="30%">Preview / Title / Description / Category</th>
+					<th width="15%"><?=__('ID / Status')?></th>
+					<th width="30%"><?=__('Preview / Title / Description / Category')?></th>
 					<th width="15%">Shows <i class="fa fa-info-circle pull-right tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Tooltip on top"></i></th>
 					<th width="15%">Clicks <i class="fa fa-info-circle pull-right tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Tooltip on top"></i></th>
 					<th width="7%">CTR <i class="fa fa-info-circle pull-right tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Tooltip on top"></i></th>
-					<th width="15%">Action</th>
+					<th width="15%"><?=__('Actions')?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -106,7 +106,7 @@
 						<i class="fa fa-info-circle pull-right tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Tooltip on top"></i>
 					</td>
 					<td class="clearfix">
-						<img alt="" src="https://dashboard.lentainform.com/tmp/img/1/imgn/3432/3432979_b.jpg?t=1428008400" width="120" height="120" class="thumb" />
+						<img alt="" src="<?=$this->Media->imageUrl($row['AdvertMedia'], 'thumb120x120')?>" class="thumb" />
 						<div class="adContent">
 							<div class="title"><?=$row['Advert']['title']?></div>
 							<div class="description"><?=$row['Advert']['descr']?></div>
@@ -125,9 +125,19 @@
 					</td>
 					<td class="text-right">0,000</td>
 					<td class="text-center">
-						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'block', $id))?>" class="btn btn-xs btn-warning tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['block']?>"><i class="fa fa-lock"></i></a>
+<?
+	if ($row['Advert']['status'] == AdvertStatus::BLOCKED) {
+?>
+						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'block', $id, 0))?>" class="btn btn-xs btn-success tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['unblock']?>"><i class="fa fa-play"></i></a>
+<?
+	} elseif ($row['Advert']['status'] == AdvertStatus::ACTIVE) {
+?>
+						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'block', $id, 1))?>" class="btn btn-xs btn-warning tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['block']?>"><i class="fa fa-pause"></i></a>
+<?
+	}
+?>
 						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'edit', $id))?>" class="btn btn-xs btn-info tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['edit']?>"><i class="fa fa-edit"></i></a>
-						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'delete', $id))?>" class="btn btn-xs btn-danger tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Delete')?>"><i class="fa fa-times"></i></a>
+						<a href="<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'delete', $id))?>" onclick="return confirm('<?=__('Are you sure to delete this advert?')?>')" class="btn btn-xs btn-danger tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Delete')?>"><i class="fa fa-times"></i></a>
 					</td>
 				</tr>
 				<tr>

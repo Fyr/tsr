@@ -8869,7 +8869,7 @@ table .fa-info-circle { color: #269abc; }
 
 .categoriesList label { float: left; width: 50%;}
 
-.previewWidget { margin-top: 43px; padding: 20px 0 20px 0}
+.previewWidget { padding-top: 43px; }
 	.previewWidget .item { float: left; }
 	.previewWidget .item img { display: block; max-width: 100%; height: auto; }
 

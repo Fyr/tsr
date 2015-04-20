@@ -24,8 +24,8 @@ class PagesController extends AppController {
 			}
 		}
 		$this->currMenu = 'Home';
-		$articles['features'] = $this->Page->findBySlug('features');
-		$this->set('articles', $articles);
+		$article = $this->Page->findBySlug('home');
+		$this->set('article', $article);
 	}
 	
 	public function view($slug) {

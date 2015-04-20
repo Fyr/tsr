@@ -18,11 +18,11 @@ class ObjectTypeHelper extends AppHelper {
                 'CategoryProduct' => __('Product categories'),
                 'Product' => __('Products'),
                 'Campaign' => __('Campaigns'),
-                'CampaignCategory' => __('Campaign categories'),
+                'SiteCategory' => __('Site categories'),
                 'Advert' => __('Adverts'),
                 'AdvertCategory' => __('Advert categories'),
-                'InformerCategory' => __('Informer categories'),
-                'Informer' => __('Informers'),
+                'WidgetCategory' => __('Widget categories'),
+                'Widget' => __('Widgets'),
             ), 
             'create' => array(
                 'Article' => __('Create Article'),
@@ -38,11 +38,11 @@ class ObjectTypeHelper extends AppHelper {
                 'CategoryProduct' => __('Create Product category'),
                 'Product' => __('Create Product'),
                 'Campaign' => __('Create campaign'),
-                'CampaignCategory' => __('Create category'),
+                'SiteCategory' => __('Create category'),
                 'Advert' => __('Create advert'),
                 'AdvertCategory' => __('Create category'),
-                'InformerCategory' => __('Create category'),
-                'Informer' => __('Create informer'),
+                'WidgetCategory' => __('Create category'),
+                'Widget' => __('Create widget'),
             ),
             'edit' => array(
                 'Article' => __('Edit Article'),
@@ -58,11 +58,11 @@ class ObjectTypeHelper extends AppHelper {
                 'CategoryProduct' => __('Edit Product category'),
                 'Product' => __('Edit Product'),
                 'Campaign' => __('Edit campaign'),
-                'CampaignCategory' => __('Edit category'),
+                'SiteCategory' => __('Edit category'),
                 'Advert' => __('Edit advert'),
                 'AdvertCategory' => __('Edit category'),
-                'InformerCategory' => __('Edit category'),
-                'Informer' => __('Informer settings'),
+                'WidgetCategory' => __('Edit category'),
+                'Widget' => __('Widget settings'),
             ),
             'view' => array(
             	'Article' => __('View Article'),
@@ -70,10 +70,15 @@ class ObjectTypeHelper extends AppHelper {
             ),
             'stats' => array(
             	'Campaign' => __('Campaign statistics'),
-            	'Informer' => __('Informer statistics'),
+            	'Widget' => __('Widget statistics'),
             ),
             'block' => array(
-            	'Advert' => __('Block this advert')
+            	'Advert' => __('Stop this advert'),
+            	'Widget' => __('Stop this widget')
+            ),
+            'unblock' => array(
+            	'Advert' => __('Activate this advert'),
+            	'Widget' => __('Activate this widget')
             )
         );
         return $Titles;

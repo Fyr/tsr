@@ -2,7 +2,7 @@
 	$this->Html->script(array('demo.morris'), array('inline' => false));
 	
 	$title = array(
-		'informers' => $this->ObjectType->getTitle('index', 'Informer'),
+		'widgets' => $this->ObjectType->getTitle('index', 'Widget'),
 		'adverts' => $this->ObjectType->getTitle('index', 'Advert'),
 	);
 	foreach(array('index', 'create', 'edit', 'stats') as $action) {
@@ -77,7 +77,7 @@
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
-					<th width="50%"><?=__('Domain')?></th>
+					<th width="50%"><?=__('Domain / Campaign')?></th>
 					<th><?=__('Status')?></th>
 					<th><?=__('In')?></th>
 					<th><?=__('Out')?></th>
@@ -92,20 +92,21 @@
 		$url = array(
 			'edit' => array('controller' => 'Campaigns', 'action' => 'edit', $row['Campaign']['id']),
 			'stats' => array('controller' => 'Campaigns', 'action' => 'stats', $row['Campaign']['id']),
-			'informers' => array('controller' => 'Informers', 'action' => 'index', $row['Campaign']['id']),
+			'widgets' => array('controller' => 'Widgets', 'action' => 'index', $row['Campaign']['id']),
 			'adverts' => array('controller' => 'Adverts', 'action' => 'index', $row['Campaign']['id'])
 		);
 ?>
 				<tr>
 					<td>
-						<?=$this->Html->link($row['Campaign']['domain'], $url['edit'])?>
+						<?=$row['Domain']['domain']?><br/>
+						<?=$this->Html->link($row['Campaign']['title'], $url['edit'])?>
 					</td>
 					<td><?=$status?> <!--i class="fa fa-info-circle pull-right tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Tooltip on top"></i--></td>
 					<td class="text-right">0</td>
 					<td class="text-right">0</td>
 					<td class="">0</td>
 					<td class="text-center">
-						<a href="<?=$this->Html->url($url['informers'])?>" class="btn btn-xs btn-success tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['informers']?>"><i class="fa fa-eye"></i></a>
+						<a href="<?=$this->Html->url($url['widgets'])?>" class="btn btn-xs btn-success tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['widgets']?>"><i class="fa fa-eye"></i></a>
 						<a href="<?=$this->Html->url($url['stats'])?>" class="btn btn-xs btn-warning tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['stats']?>"><i class="fa fa-bar-chart-o"></i></a>
 						<a href="<?=$this->Html->url($url['adverts'])?>" class="btn btn-xs btn-info tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['adverts']?>"><i class="fa fa-tasks"></i></a>
 						<a href="<?=$this->Html->url($url['edit'])?>" class="btn btn-xs btn-danger tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['edit']?>"><i class="fa fa-wrench"></i></a>

@@ -26,6 +26,7 @@
     
     $aStatusOptions = Hash::merge(array(0 => '- '.__('Any status').' -'), $aStatusOptions);
     $aCategoryOptions = Hash::merge(array(0 => '- '.__('Any category').' -'), $aCategoryOptions);
+    $aCampaignOptions = Hash::merge(array(0 => '- '.__('Any campaign').' -'), $aCampaignOptions);
 ?>
 <script type="text/javascript">
 var aStatusOptions, aCategoryOptions, aCampaignOptions;

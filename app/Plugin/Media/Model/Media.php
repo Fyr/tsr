@@ -21,10 +21,13 @@ class Media extends AppModel {
     			$_row[$this->alias]['object_id'] = $row['object_id']; // required for relations btw/ models :(
     			$_row[$this->alias]['media_type'] = $row['media_type'];
     			$_row[$this->alias]['ext'] = str_replace('.', '', $row['ext']);
+    			$_row[$this->alias]['crop'] = explode(',', $row['crop']);
+    			$_row[$this->alias]['orig_w'] = intval($row['orig_w']);
+    			$_row[$this->alias]['orig_h'] = intval($row['orig_h']);
     		}
     		if ($row['id']) {
 	    		if ($row['media_type'] == 'image') {
-	            	$_row[$this->alias]['url_img'] = $this->PHMedia->getImageUrl($row['object_type'], $row['id'], 'noresize', $row['file'].$row['ext'].'.png');
+					$_row[$this->alias]['url_img'] = $this->PHMedia->getImageUrl($row['object_type'], $row['id'], 'noresize', $row['file'].$row['ext'].'.png');
 	    		}
 	    		$_row[$this->alias]['url_download'] = $this->PHMedia->getRawUrl($row['object_type'], $row['id'], $row['file'].$row['ext']);
     		} else  {
@@ -43,14 +46,13 @@ class Media extends AppModel {
      * @return bool
      */
 	public function beforeDelete($cascade = true) {
-		App::uses('Path', 'Core.Vendor');
-		
 		$media = $this->findById($this->id);
 		if ($media) {
 			$path = $this->PHMedia->getPath($media[$this->alias]['object_type'], $this->id);
 	
 			if (file_exists($path)) {
 				// remove all files in folder
+				App::uses('Path', 'Core.Vendor');
 				$aPath = Path::dirContent($path);
 				if (isset($aPath['files']) && $aPath['files']) {
 					foreach($aPath['files'] as $file) {
@@ -124,11 +126,12 @@ class Media extends AppModel {
 				$image->crop($x, $y, $sizeX, $sizeY);
 				$image->outputPng($this->PHMedia->getFileName($object_type, $id, null, 'thumb.png'));
 			}
-			
 			// Set main image if it was first image
 			$this->initMain($object_type, $object_id);
+		} else {
+			// for non-image files save filesize
+			$this->save(array('id' => $id, 'orig_fsize' => filesize($file)));
 		}
-		
 		return $id;
     }
     
@@ -200,6 +203,43 @@ class Media extends AppModel {
 				$this->save($media);
 			}
 		} // no records
+	}
+	
+	public function recrop($id, $crop) {
+		$media = $this->findById($id);
+		if (!$media) {
+			return false;
+		}
+		$object_type = $media[$this->alias]['object_type'];
+		$file = $media[$this->alias]['file'];
+		$ext = $media[$this->alias]['ext'];
+		
+		$file = $this->PHMedia->getFileName($object_type, $id, null, $file.$ext);
+			
+		App::uses('Image', 'Media.Vendor');
+		$image = new Image();
+		$image->load($file);
+		
+		//prepare thumb for future operations
+		list($x, $y, $sizeX, $sizeY) = explode(',', $crop);
+		$image->crop($x, $y, $sizeX, $sizeY);
+		
+		// Delete all thumb*.* files
+		$path = $this->PHMedia->getPath($object_type, $id);
+		if (file_exists($path)) {
+			// remove all files in folder
+			App::uses('Path', 'Core.Vendor');
+			$aPath = Path::dirContent($path);
+			if (isset($aPath['files']) && $aPath['files']) {
+				foreach($aPath['files'] as $file) {
+					if (strpos($file, 'thumb') !== false) {
+						unlink($aPath['path'].$file);
+					}
+				}
+			}
+		}
+		$image->outputPng($this->PHMedia->getFileName($object_type, $id, null, 'thumb.png'));
+		return $this->save(array('id' => $id, $crop));
 	}
 	
 }
