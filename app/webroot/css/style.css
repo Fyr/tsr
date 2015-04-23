@@ -8868,6 +8868,7 @@ table .fa-info-circle { color: #269abc; }
 }
 
 .categoriesList label { float: left; width: 50%;}
+.categoriesList div.cat-title { float: right; width: 85%; margin-right: 5%; }
 
 .previewWidget { padding-top: 43px; }
 	.previewWidget .item { float: left; }
@@ -8897,3 +8898,8 @@ a:focus { outline-offset: 0; outline: none;}
 .tab-content .panel-group .collapsed .panel-title  .fa-caret-down:before { content: "\f0da"; }
 .tab-content .panel-group .panel-title a { text-decoration: none;}
 .tab-content .panel-group .panel-heading { cursor: pointer}
+
+.error-message {
+	color: #f00;
+}
+input[type=text].form-error, textarea.form-error { border: 1px solid #f00; }

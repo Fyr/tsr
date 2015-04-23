@@ -66,12 +66,11 @@
 		echo $this->Form->hidden('AdvertMedia.crop', array('value' => ''));
 	}
 ?>
-		<!--form class="ls_form" role="form"-->
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label><?=__('Link')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Описание"></i>
-						<?=$this->Form->input('url', array('class' => 'form-control', 'label' => false, 'div' => false))?>
+						<?=$this->Form->input('Advert.url', array('class' => 'form-control', 'label' => false, 'div' => false))?>
 					</div>
 					<div class="form-group clearfix">
 						<label><?=__('Title')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Your title should be less then %s chars', Configure::read('Advert.maxTitleLen'))?>"></i>
@@ -82,12 +81,12 @@
 	}
 	
 ?>
-						<?=$this->Form->input('title', array('class' => 'form-control', 'label' => false, 'div' => false))?>
+						<?=$this->Form->input('Advert.title', array('class' => 'form-control', 'label' => false, 'div' => false))?>
 						<span id="AdvertTitleCharsLeft" class="small pull-right"></span>
 					</div>
 					<div class="form-group">
 						<label><?=__('Description')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Your description should be less then %s chars', Configure::read('Advert.maxDescrLen'))?>"></i>
-						<?=$this->Form->input('descr', array('class' => 'form-control', 'label' => false, 'div' => false))?>
+						<?=$this->Form->input('Advert.descr', array('class' => 'form-control', 'label' => false, 'div' => false))?>
 						<span id="AdvertDescrCharsLeft" class="small pull-right"></span>
 					</div>
 					<div class="form-group">
@@ -105,7 +104,7 @@
 					</div>
 					<div id="control-Category" class="form-group">
 						<label><?=__('Category')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Описание"></i>
-						<?=$this->Form->input('advert_category_id', array('options' => $aCategoryOptions, 'class' => 'form-control selectize', 'label' => false, 'div' => false))?>
+						<?=$this->Form->input('Advert.advert_category_id', array('options' => $aCategoryOptions, 'class' => 'form-control selectize', 'label' => false, 'div' => false))?>
 					</div>
 					<div id="control-Buttons" class="form-group clearfix">
 						<button type="button" id="btnSave" class="btn ls-green-btn btn-lg pull-left"><?=__('Save')?></button>
@@ -162,6 +161,9 @@ $(document).ready(function(){
 		$('#control-Process').show();
 		$('#advertImageChoose').hide();
 		
+		$('.error-message').remove();
+		$('.form-error').removeClass('form-error');
+		
 		if (jcrop_data.length) {
 			$('#AdvertMediaCrop').val(jcrop_data.join(','));
 		}
@@ -179,6 +181,15 @@ $(document).ready(function(){
 				} else {
 					window.location.href = mediaURL.redir;
 				}
+			} else if (response.invalidFields) {
+				for(var key in response.invalidFields) {
+					var div = $('<div />').addClass('error-message').html(response.invalidFields[key][0]);
+					$('input[name="data[Advert][' + key + ']"], textarea[name="data[Advert][' + key + ']"]').addClass('form-error').parent().append(div);
+				}
+				
+				$('#control-Buttons').show();
+				$('#control-Process').hide();
+				$('#advertImageChoose').show();
 			}
 		}, 'json');
 	});

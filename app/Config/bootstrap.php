@@ -38,6 +38,24 @@ Configure::write('Advert', array(
 	'maxDescrLen' => 250,
 ));
 
+Configure::write('Widget', array(
+	'maxTitleLen' => 70,
+	'image_size_options' => array(
+		'50' => '50x50px', '60' => '60x60px', '70' => '70x70px', '80' => '80x80px', '90' => '90x90px', 
+		'100' => '100x100px', '120' => '120x120px', '140' => '140x140px', '180' => '180x180px', '200' => '200x200px'
+	),
+	'image_pos_options' => array('above' => __('above'), 'behind' => __('behind')),
+	'font_weight_options' => array('normal' => __('normal'), 'bold' => __('bold')),
+	'font_family_options' => array(
+		'Arial' => 'Arial', 
+		'Courier New' => 'Courier New', 
+		'Georgia' => 'Georgia', 
+		'Tahoma' => 'Tahoma', 
+		'Times New Roman' => 'Times New Roman', 
+		'Verdana' => 'Verdana'
+	),
+));
+
 
 function fdebug($data, $logFile = 'tmp.log', $lAppend = true) {
 	file_put_contents($logFile, mb_convert_encoding(print_r($data, true), 'cp1251', 'utf8'), ($lAppend) ? FILE_APPEND : null);

@@ -7,6 +7,17 @@ class AdvertsController extends UserAppController {
 	public $name = 'Adverts';
 	public $uses = array('User.Advert', 'User.Campaign', 'User.AdvertStatus', 'User.AdvertCategory');
 	
+	protected $_response = array('status' => 'OK');
+	
+	public function beforeRender() {
+		parent::beforeRender();
+		if ($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+			$this->set('_response', $this->_response);
+    		$this->set('_serialize', '_response');
+		}
+	}
+	
 	public function index($campaign_id) {
 		
 		$conditions = array('campaign_id' => $campaign_id);
@@ -36,13 +47,16 @@ class AdvertsController extends UserAppController {
 				}
 				$this->setFlash(__('Your advert has been saved'), 'success');
 				if ($this->request->is('ajax')) {
-					
-					$this->layout = 'ajax';
-					$this->set('_response', array('status' => 'OK', 'data' => $this->Advert->findById($this->Advert->id)));
-    	    		$this->set('_serialize', '_response');
+					$this->_response = array('status' => 'OK', 'data' => $this->Advert->findById($this->Advert->id));
 					return;
 				}
 				return $this->redirect(array('controller' => 'Adverts', 'action' => 'index', $this->request->data('Advert.campaign_id')));
+			} else {
+				if ($this->request->is('ajax')) {
+					$this->_response = array('status' => 'ERROR', 'errMsg' => __('Form could not be saved! Please, check errors'), 'invalidFields' => $this->Advert->invalidFields());
+				} else {
+					$this->setFlash(__('Form could not be saved! Please, check errors'), 'error');
+				}
 			}
 		} else {
 			$this->request->data = $this->Advert->findById($id);

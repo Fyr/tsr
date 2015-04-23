@@ -15,13 +15,16 @@
 		array('label' => $title)
 	);
 	
+	$collapsePanels = (!$id && !$this->request->data('Widget.title'));
+	
 	$defaults = array(
-		'title' => 'Default widget title...',
-		'inner_padding' => 10,
+		'title' => 'Example Article Headline from the Creozo.com Network',
+		'width' => '485',
 		'rows' => 1,
 		'cols' => 4,
 		'bkg_color' => '#ffffff',
-		'img' => 'https://imgn.marketgid.com/200x200/3397/3397561_origin.jpg',
+		'img' => '/img/widget_default_img.png',
+		'image_size' => 100,
 		'image_margin' => 10,
 		// Text settings
 		'font_size' => 12,
@@ -51,7 +54,8 @@
 			'label' => array('class' => 'col-sm-5 control-label', 'text' => ''),
 			'class' => 'form-control',
 			'between' => '<div class="col-sm-7">',
-			'after' => '</div>'
+			'after' => '</div>',
+			'error' => array('attributes' => array('wrap' => 'div', 'class' => 'error-message'))
 		)
 	));
 	echo $this->Form->hidden('id');
@@ -76,14 +80,23 @@
 										<div class="panel-body">
 <?
 	echo $this->Form->input('title', array(
+		'required' => false,
 		'label' => array('class' => 'col-sm-5 control-label', 'text' => __('Widget name'))
 	));
+	echo $this->Form->input('width', array(
+		'label' => array(
+			'class' => 'col-sm-5 control-label', 
+			'text' => __('Widget width, px')
+		)
+	));
+	/*
 	echo $this->Form->input('inner_padding', array(
 		'label' => array(
 			'class' => 'col-sm-5 control-label', 
 			'text' => __('Inner padding, px')
 		)
 	));
+	*/
 	echo $this->Form->input('rows', array(
 		'label' => array('class' => 'col-sm-5 control-label', 'text' => __('Number of rows'))
 	));
@@ -97,14 +110,14 @@
 	
 	$options = array(
 		'class' => 'selectize',
-		'options' => array(100 => '100px', 140 => '140px', 180 => '180px', 200 => '200px'),
+		'options' => Configure::read('Widget.image_size_options'),
 		'label' => array('class' => 'col-sm-5 control-label', 'text' => __('Image size')),
 	);
 	echo $this->Form->input('image_size', $options);
 
 	$options = array(
 		'class' => 'selectize',
-		'options' => array('above' => __('above'), 'behind' => __('behind')),
+		'options' => Configure::read('Widget.image_pos_options'),
 		'label' => array('class' => 'col-sm-5 control-label', 'text' => __('Image position')),
 	);
 	echo $this->Form->input('image_pos', $options);
@@ -118,11 +131,11 @@
 										</div>
 									</div>
 								</div>
-								<div class="panel panel-light-green">
-									<div class="panel-heading collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo" data-target="#collapseTwo">
+								<div id="panelTextSettings" class="panel panel-light-green">
+									<div class="panel-heading"  data-target="#collapseTwo" data-toggle="collapse" aria-expanded="true" aria-controls="collapseTwo">
 										<h4 class="panel-title"><i class="fa fa-caret-down"></i> <?=__('Text settings')?></h4>
 									</div>
-									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									<div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 										<div class="panel-body">
 <?
 	echo $this->Form->input('font_size', array(
@@ -139,21 +152,14 @@
 	
 	$options = array(
 		'class' => 'selectize',
-		'options' => array('normal' => __('normal'), 'bold' => __('bold')),
+		'options' => Configure::read('Widget.font_weight_options'),
 		'label' => array('class' => 'col-sm-5 control-label', 'text' => __('Font weight')),
 	);
 	echo $this->Form->input('font_weight', $options);
 	
 	$options = array(
 		'class' => 'selectize',
-		'options' => array(
-			'Arial' => 'Arial', 
-			'Courier New' => 'Courier New', 
-			'Georgia' => 'Georgia', 
-			'Tahoma' => 'Tahoma', 
-			'Times New Roman' => 'Times New Roman', 
-			'Verdana' => 'Verdana'
-		),
+		'options' => Configure::read('Widget.font_family_options'),
 		'label' => array('class' => 'col-sm-5 control-label', 'text' => __('Font family')),
 	);
 	echo $this->Form->input('font_family', $options);
@@ -161,11 +167,11 @@
 										</div>
 									</div>
 								</div>
-								<div class="panel panel-light-green">
-									<div class="panel-heading collapsed" data-target="#collapseThree" data-toggle="collapse" aria-expanded="false" aria-controls="collapseThree">
-										<h4 class="panel-title"><i class="fa fa fa-caret-down"></i> <?=__('Borders')?></h4>
+								<div id="panelBorders" class="panel panel-light-green">
+									<div class="panel-heading"  data-target="#collapseThree" data-toggle="collapse" aria-expanded="true" aria-controls="collapseThree">
+										<h4 class="panel-title"><i class="fa fa-caret-down"></i> <?=__('Borders')?></h4>
 									</div>
-									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
 										<div class="panel-body">
 <?
 	echo $this->Form->input('border_outer_size', array(
@@ -200,14 +206,14 @@
 									<h3 class="panel-title">Categories</h3>
 								</div>
 								<div class="panel-body">
-									<label><input type="checkbox" id="checkAll" /> Select all</label><br /><br />
+									<!--label><input type="checkbox" id="checkAll" /> Select all</label><br /><br /-->
 									<div class="categoriesList clearfix">
 <?
 	$i = 0;
 	foreach($aCategoryOptions as $cat_id => $title) {
-		$checked = (in_array($cat_id, $widgetsByCat)) ? 'checked="checked"' : '';
+		$checked = (in_array($cat_id, $widgetsByCat) || !$id) ? 'checked="checked"' : '';
 ?>
-											<label><input type="checkbox" name="data[WidgetByCategory][category_id][]" value="<?=$cat_id?>" <?=$checked?> /> <?=$title?></label>
+											<label><input type="checkbox" name="data[WidgetByCategory][category_id][]" value="<?=$cat_id?>" <?=$checked?> /> <div class="cat-title"> <?=$title?></div></label>
 <?
 		$i++;
 	}
@@ -229,6 +235,19 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	$('.error-message').each(function(){
+		var html = $(this).html();
+		$(this).parent().find('.col-sm-7').append(this);
+	});
+	
+<?
+	if ($collapsePanels) {
+?>
+	$('#panelTextSettings h4, #panelBorders h4').click();
+<?
+	}
+?>
+
 	$('.miniColors').minicolors({
     	animationSpeed: 50,
     	animationEasing: 'swing',
@@ -251,7 +270,7 @@ $(document).ready(function(){
 		$('.categoriesList input').prop('checked', $('#checkAll').prop('checked'));
 	});
 	
-	$('#WidgetTitle, #WidgetRows, #WidgetCols, #WidgetBorderOuterSize, #WidgetBorderImgSize, #WidgetImageMargin, #WidgetInnerPadding, #WidgetFontSize').keyup(function(e){
+	$('#WidgetTitle, #WidgetRows, #WidgetCols, #WidgetBorderOuterSize, #WidgetBorderImgSize, #WidgetImageMargin, #WidgetWidth, #WidgetFontSize').keyup(function(e){
 		e.stopPropagation();
 		updatePreviewWidget();
 	});
@@ -266,19 +285,20 @@ $(document).ready(function(){
 function updatePreviewWidget() {
 	var re = /^[0-9]+$/;
 	if (re.test($('#WidgetRows').val()) && re.test($('#WidgetCols').val()) && re.test($('#WidgetBorderOuterSize').val())
-		&& re.test($('#WidgetImageMargin').val()) && re.test($('#WidgetInnerPadding').val()) && re.test($('#WidgetFontSize').val())) {
+		&& re.test($('#WidgetImageMargin').val()) && re.test($('#WidgetWidth').val()) && re.test($('#WidgetFontSize').val())) {
 		$('.previewWidget').html(tmpl('preview-widget'));
 	}
 }
 </script>
 <script type="text/x-tmpl" id="preview-widget">
 {%
-	var style = 'display: inline-block; ';
+	var style = 'display: block; overflow: hidden;';
 	style+= 'background: ' + $('#WidgetBkgColor').val() + '; ';
-	style+= 'padding: ' + $('#WidgetInnerPadding').val() + 'px; ';
+	style+= 'width: ' + $('#WidgetWidth').val() + 'px; ';
 	if ($('#WidgetBorderOuterSize').val()) {
 		style+= 'border: ' + $('#WidgetBorderOuterSize').val() + 'px solid ' + $('#WidgetBorderOuterColor').val();
 	}
+	
 %}
 <div class="clearfix" style="{%=style%}">
 {%
@@ -316,7 +336,9 @@ function updatePreviewWidget() {
 		style+= 'border: ' + $('#WidgetBorderImgSize').val() + 'px solid ' + $('#WidgetBorderImgColor').val();
 	}
 %}
+<a href="javascript:void(0)">
 <img style="{%=style%}" src="<?=$defaults['img']?>">
+</a>
 </script>
 
 <script type="text/x-tmpl" id="preview-text">
@@ -326,5 +348,7 @@ function updatePreviewWidget() {
 	style+= 'font-weight: ' + $('#WidgetFontWeight').val() + '; ';
 	style+= 'font-family: ' + $('#WidgetFontFamily').val() + ', sans-serif; ';
 %}
+<a href="javascript:void(0)">
 <span style="{%=style%}">{%=$('#WidgetTitle').val()%}</span>
+</a>
 </script>

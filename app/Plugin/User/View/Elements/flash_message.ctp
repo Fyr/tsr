@@ -3,7 +3,7 @@
 	if ($msg = $this->Session->flash('success')) {
 		$class = 'success';
 	} elseif ($msg = $this->Session->flash('error')) {
-		$class = 'error';
+		$class = 'danger';
 	} else {
 		$msg = $this->Session->flash('info');
 	}

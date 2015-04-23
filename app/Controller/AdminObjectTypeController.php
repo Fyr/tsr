@@ -30,7 +30,7 @@ class AdminObjectTypeController extends AdminController {
     
     public function edit($id = 0) {
     	if ($this->request->is(array('put', 'post'))) {
-			if ($this->{$this->objectType}->save($this->request->data)) {
+			if ($this->{$this->objectType}->saveAll($this->request->data)) {
 				$baseRoute = array('action' => 'index');
 				$id = $this->{$this->objectType}->id;
 				return $this->redirect(($this->request->data('apply')) ? $baseRoute : array($id));

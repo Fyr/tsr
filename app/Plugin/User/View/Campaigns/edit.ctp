@@ -23,7 +23,7 @@
 			<div class="row">
 				<label class="col-md-2 control-label"><?=__('Domain')?><!--i data-original-title="<?=__('Input new domain or choose existing one')?>" data-toggle="tooltip" data-placement="top" class="fa fa-info-circle pull-right tooltipLink"></i--></label>
 				<div class="col-md-10 ls-group-input">
-					<?=$this->Form->input('Domain.domain', array('class' => 'form-control', 'label' => false, 'div' => false, 'placeholer' => 'http://yournewdomain.com'))?>
+					<?=$this->Form->input('Domain.domain', array('class' => 'form-control', 'label' => false, 'div' => false, 'placeholder' => 'yournewdomain.com'))?>
 					
 <?
 /*

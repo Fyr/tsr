@@ -24,6 +24,8 @@ class WidgetsController extends UserAppController {
 			if ($this->Widget->save($this->request->data)) {
 				$this->setFlash(__('Your widget has been saved'), 'success');
 				return $this->redirect(array('controller' => 'Widgets', 'action' => 'index', $this->request->data('Widget.campaign_id')));
+			} else {
+				$this->setFlash(__('Form could not be saved! Please, check errors'), 'error');
 			}
 		} else {
 			$this->request->data = $this->Widget->findById($id);

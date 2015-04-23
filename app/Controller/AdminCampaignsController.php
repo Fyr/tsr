@@ -5,7 +5,7 @@ App::uses('UserAppModel', 'User.Model');
 App::uses('Campaign', 'User.Model');
 class AdminCampaignsController extends AdminObjectTypeController {
     public $name = 'AdminCampaigns';
-    public $uses = array('User', 'User.Campaign', 'User.CampaignStatus', 'User.SiteCategory', 'User.StatService');
+    public $uses = array('User', 'User.Domain', 'User.Campaign', 'User.CampaignStatus', 'User.SiteCategory', 'User.StatService');
     
     protected $objectType = 'Campaign';
     
@@ -23,15 +23,16 @@ class AdminCampaignsController extends AdminObjectTypeController {
     	$this->fieldSet = array(
     		'Domain.id' => array('hidden'),
     		'Campaign.id' => array('hidden'),
-    		'user_id' => array('options' => $this->User->find('list', array('fields' => array('id', 'username')))),
-    		'status' => array('options' => $this->CampaignStatus->options()),
-    		'domain' => array(),
-    		'campaign_category_id' => array('options' => $this->SiteCategory->getObjectOptions()),
-    		'stat_service_id' => array('options' => $this->StatService->options()),
-    		'stat_url' => array(),
-    		'login' => array(),
-    		'mirrors' => array(),
-    		'comment' => array()
+    		'Domain.user_id' => array('options' => $this->User->find('list', array('fields' => array('id', 'username')))),
+    		'Campaign.status' => array('options' => $this->CampaignStatus->options()),
+    		'Domain.domain' => array(),
+    		'Domain.site_category_id' => array('options' => $this->SiteCategory->getObjectOptions()),
+    		'Domain.stat_service_id' => array('options' => $this->StatService->options()),
+    		'Domain.stat_url' => array(),
+    		'Domain.login' => array(),
+    		'Domain.mirrors' => array(),
+    		'Campaign.title' => array(),
+    		'Campaign.comment' => array()
     	);
     	
     	parent::edit($id);

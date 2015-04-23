@@ -99,10 +99,8 @@
 ?>
 						<a href="<?=$this->Html->url(array('controller' => 'Widgets', 'action' => 'stats', $id))?>" class="btn btn-xs btn-info tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['stats']?>"><i class="fa fa-bar-chart-o"></i></a>
 						<a href="<?=$this->Html->url(array('controller' => 'Widgets', 'action' => 'edit', $id))?>" class="btn btn-xs btn-primary tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=$title['edit']?>"><i class="fa fa-wrench"></i></a>
+						<a id="widget_<?=$id?>" data-target="#getCode" data-toggle="modal" href="javascript: void(0)" class="btn btn-xs btn-warning tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Show code')?>"><i class="fa fa-code"></i></a>
 						<a href="<?=$this->Html->url(array('controller' => 'Widgets', 'action' => 'delete', $id))?>" class="btn btn-xs btn-danger tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Delete')?>"><i class="fa fa-times"></i></a>
-						<br />
-						<br />
-						<a id="widget_<?=$id?>" data-target="#getCode" data-toggle="modal" href="javascript: void(0)"><?=__('Show code')?></a>
 					</td>
 				</tr>
 <?

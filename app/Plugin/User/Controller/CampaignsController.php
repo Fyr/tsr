@@ -20,9 +20,13 @@ class CampaignsController extends UserAppController {
 		if ($this->request->is(array('put', 'post'))) {
 			$this->request->data('Domain.user_id', $this->currUserID);
 			$this->request->data('Campaign.status', CampaignStatus::MODERATION);
+			
+			fdebug($this->request->data);
 			if ($this->Campaign->saveAll($this->request->data)) {
 				$this->setFlash(__('Your campaign has been saved'), 'success');
 				return $this->redirect(array('controller' => 'Campaigns', 'action' => 'index'));
+			} else {
+				$this->setFlash(__('Form could not be saved! Please, check errors below'), 'error');
 			}
 		} else {
 			$this->request->data = $this->Campaign->findById($id);

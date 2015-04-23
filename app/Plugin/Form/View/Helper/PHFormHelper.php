@@ -16,6 +16,7 @@ class PHFormHelper extends FormHelper {
 		);
 		
 		// Fix validation errors translation
+		/*
 		foreach($this->validationErrors as $_model => $fields) {
 			if (is_array($fields)) {
 				foreach($fields as $field => $messages) {
@@ -25,6 +26,7 @@ class PHFormHelper extends FormHelper {
 				}
 			}
 		}
+		*/
 		return parent::create($model, $options);
 	}
 
