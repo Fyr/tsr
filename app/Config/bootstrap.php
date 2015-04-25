@@ -42,9 +42,10 @@ Configure::write('Widget', array(
 	'maxTitleLen' => 70,
 	'image_size_options' => array(
 		'50' => '50x50px', '60' => '60x60px', '70' => '70x70px', '80' => '80x80px', '90' => '90x90px', 
-		'100' => '100x100px', '120' => '120x120px', '140' => '140x140px', '180' => '180x180px', '200' => '200x200px'
+		'100' => '100x100px', '120' => '120x120px', '140' => '140x140px', '180' => '180x180px', '200' => '200x200px',
+		'custom' => __('custom')
 	),
-	'image_pos_options' => array('above' => __('above'), 'behind' => __('behind')),
+	'image_pos_options' => array('above' => __('above'), 'behind' => __('behind'), 'left' => __('left'), 'right' => __('right')),
 	'font_weight_options' => array('normal' => __('normal'), 'bold' => __('bold')),
 	'font_family_options' => array(
 		'Arial' => 'Arial', 

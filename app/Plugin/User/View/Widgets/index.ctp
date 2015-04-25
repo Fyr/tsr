@@ -1,4 +1,6 @@
 <?
+	$this->Html->script(array('vendor/tmpl.min'), array('inline' => false));
+	
 	$title = array();
 	foreach(array('index', 'create', 'edit', 'stats', 'block', 'unblock') as $action) {
 		$title[$action] = $this->ObjectType->getTitle($action, 'Widget');
@@ -115,10 +117,27 @@
 $(document).ready(function(){
 	$('#getCode').on('show.bs.modal', function(e){
 		var id = $(e.relatedTarget).prop('id').replace(/widget_/, '');
-		$('#getCode .modal-body textarea').val('<!-- <?=Configure::read('domain.title')?> Widget: begin -->\n' + '<' + 'script src="http://<?=Configure::read('domain.url')?>/widget/script/' + id + '"' + '><' +  '/script' + '>' + '\n<!-- <?=Configure::read('domain.title')?> Widget: end -->');
+		// $('#getCode .modal-body textarea').val('<!-- <?=Configure::read('domain.title')?> Widget: begin -->\n' + '<' + 'script src="http://<?=Configure::read('domain.url')?>/widget/script/' + id + '"' + '><' +  '/script' + '>' + '\n<!-- <?=Configure::read('domain.title')?> Widget: end -->');
+		$('#getCode .modal-body textarea').val(tmpl('preview-code', {id: id}));
 	});
 });
 </script>
+
+<script type="text/x-tmpl" id="preview-code"><!-- <?=Configure::read('domain.title')?> Widget: begin -->
+<div id="creozo-com-widget-{%=o.id%}"></div>
+{%#'<script language="javascript" type="text/javascript">'%}
+(function(){
+	var creozo_widget = document.createElement('script');
+	creozo_widget.type = 'text/javascript';
+	creozo_widget.async = true;
+	creozo_widget.src = 'http://creozo.dev/widget/script/{%=o.id%}';
+	var scripts = document.getElementsByTagName('script')[0];
+	scripts.parentNode.insertBefore(creozo_widget, scripts);
+})();
+{%#'<\/script>'%}
+<!-- <?=Configure::read('domain.title')?> Widget: end -->
+</script>
+
 <div class="modal fade" id="getCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -127,7 +146,7 @@ $(document).ready(function(){
 				<h4 class="modal-title"><?=__('This is a code for your widget. Just copy and paste it into a place on the page where the widget must be displayed.')?></h4>
 			</div>
 			<div class="modal-body">
-				<textarea class="form-control" style="height:100px"></textarea>
+				<textarea class="form-control" readonly="readonly" style="height: 300px; cursor: text"></textarea>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success btn-xs" data-dismiss="modal">Close</button>

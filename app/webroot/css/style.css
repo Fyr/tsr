@@ -6455,6 +6455,9 @@ a.expand:hover{
 .panel .form-control {
     background-color: #fff;
 }
+.panel .form-control.disabled {
+    background-color: #eee;
+}
 
 .no-margin {
     margin: 0;

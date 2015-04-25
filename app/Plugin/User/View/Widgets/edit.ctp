@@ -25,6 +25,7 @@
 		'bkg_color' => '#ffffff',
 		'img' => '/img/widget_default_img.png',
 		'image_size' => 100,
+		'custom_image_size' => 0,
 		'image_margin' => 10,
 		// Text settings
 		'font_size' => 12,
@@ -114,6 +115,12 @@
 		'label' => array('class' => 'col-sm-5 control-label', 'text' => __('Image size')),
 	);
 	echo $this->Form->input('image_size', $options);
+	
+	echo $this->Form->input('custom_image_size', array(
+		'class' => 'form-control disabled',
+		'disabled' => 'disabled',
+		'label' => array('class' => 'col-sm-5 control-label', 'text' => __('Custom image size, px'))
+	));
 
 	$options = array(
 		'class' => 'selectize',
@@ -266,11 +273,15 @@ $(document).ready(function(){
 		theme: 'bootstrap'
 	});
 	
+	$('#WidgetImageSize').change(function(){
+		updateCustomImageSize();
+	});
+	
 	$('#checkAll').change(function(){
 		$('.categoriesList input').prop('checked', $('#checkAll').prop('checked'));
 	});
 	
-	$('#WidgetTitle, #WidgetRows, #WidgetCols, #WidgetBorderOuterSize, #WidgetBorderImgSize, #WidgetImageMargin, #WidgetWidth, #WidgetFontSize').keyup(function(e){
+	$('#WidgetTitle, #WidgetRows, #WidgetCols, #WidgetBorderOuterSize, #WidgetBorderImgSize, #WidgetImageMargin, #WidgetWidth, #WidgetFontSize, #WidgetCustomImageSize').keyup(function(e){
 		e.stopPropagation();
 		updatePreviewWidget();
 	});
@@ -279,13 +290,28 @@ $(document).ready(function(){
 		updatePreviewWidget();
 	});
 	
+	updateCustomImageSize();
 	updatePreviewWidget();
 });
+
+function updateCustomImageSize() {
+	$('#WidgetCustomImageSize').removeClass('disabled').prop('disabled', '');
+	if ($('#WidgetImageSize').val() !== 'custom') {
+		$('#WidgetCustomImageSize').addClass('disabled').prop('disabled', 'disabled');
+		$('#WidgetCustomImageSize').val('');
+	} else {
+		if (!$('#WidgetCustomImageSize').val()) {
+			$('#WidgetCustomImageSize').val('200');
+		}
+		$('#WidgetCustomImageSize').focus().select();
+	}
+}
 
 function updatePreviewWidget() {
 	var re = /^[0-9]+$/;
 	if (re.test($('#WidgetRows').val()) && re.test($('#WidgetCols').val()) && re.test($('#WidgetBorderOuterSize').val())
-		&& re.test($('#WidgetImageMargin').val()) && re.test($('#WidgetWidth').val()) && re.test($('#WidgetFontSize').val())) {
+		&& re.test($('#WidgetImageMargin').val()) && re.test($('#WidgetWidth').val()) && re.test($('#WidgetFontSize').val())
+		&& (re.test($('#WidgetImageSize').val()) || re.test($('#WidgetCustomImageSize').val())) ) {
 		$('.previewWidget').html(tmpl('preview-widget'));
 	}
 }
@@ -307,19 +333,7 @@ function updatePreviewWidget() {
 	<div class="clearfix">
 {%
 		for(var j = 0; j < $('#WidgetCols').val(); j++) {
-%}
-		<div class="item" style="width: {%=$('#WidgetImageSize').val()%}px; margin: {%=$('#WidgetImageMargin').val()%}px">
-{%
-			if ($('#WidgetImagePos').val() == 'above') {
-				include('preview-img', {});
-				include('preview-text', {});
-			} else if ($('#WidgetImagePos').val() == 'behind') {
-				include('preview-text', {});
-				include('preview-img', {});
-			}
-%}
-		</div>
-{%
+			include('preview-block', {});
 		}
 %}
 	</div>
@@ -329,11 +343,51 @@ function updatePreviewWidget() {
 </div>
 </script>
 
+<script type="text/x-tmpl" id="preview-block">
+{%
+	var style = '';
+	if ($.inArray($('#WidgetImagePos').val(), ['above', 'behind']) >= 0) {
+		style = 'width: ' + $('#WidgetImageSize').val() + 'px; margin: ' + $('#WidgetImageMargin').val() + 'px';
+	} else {
+		var w = Math.floor($('#WidgetWidth').val() / $('#WidgetCols').val() - 2 * $('#WidgetImageMargin').val() - $('#WidgetBorderImgSize').val());
+		style = 'width: ' + w + 'px; margin: ' + $('#WidgetImageMargin').val() + 'px; ';
+	}
+%}
+<div class="item" style="{%=style%}">
+{%
+	if ($('#WidgetImagePos').val() == 'above') {
+		include('preview-img', {});
+		include('preview-text', {});
+	} else if ($('#WidgetImagePos').val() == 'behind') {
+		include('preview-text', {});
+		include('preview-img', {});
+	} else {
+		include('preview-img', {});
+		include('preview-text', {});
+	}
+%}
+</div>
+</script>
+
 <script type="text/x-tmpl" id="preview-img">
 {%
-	var style = 'width: ' + $('#WidgetImageSize').val() + 'px; ';
+	var style = ''; 
+	if ($('#WidgetCustomImageSize').val()) {
+		style+= 'width: ' + $('#WidgetCustomImageSize').val() + 'px; ';
+	} else {
+		style+= 'width: ' + $('#WidgetImageSize').val() + 'px; ';
+	}
+	
 	if ($('#WidgetBorderImgSize').val()) {
-		style+= 'border: ' + $('#WidgetBorderImgSize').val() + 'px solid ' + $('#WidgetBorderImgColor').val();
+		style+= 'border: ' + $('#WidgetBorderImgSize').val() + 'px solid ' + $('#WidgetBorderImgColor').val() + '; ';
+	}
+	if ($.inArray($('#WidgetImagePos').val(), ['left', 'right']) >= 0) {
+		style+= 'float: ' + $('#WidgetImagePos').val() + '; ';
+		if ($('#WidgetImagePos').val() == 'left') {
+			style+= 'margin: 0 ' + $('#WidgetImageMargin').val() + 'px 0 0; ';
+		} else {
+			style+= 'margin: 0 0 0 ' + $('#WidgetImageMargin').val() + 'px; ';
+		}
 	}
 %}
 <a href="javascript:void(0)">
@@ -346,7 +400,7 @@ function updatePreviewWidget() {
 	var style = 'font-size: ' + $('#WidgetFontSize').val() + 'px; ';
 	style+= 'color: ' + $('#WidgetFontColor').val() + '; ';
 	style+= 'font-weight: ' + $('#WidgetFontWeight').val() + '; ';
-	style+= 'font-family: ' + $('#WidgetFontFamily').val() + ', sans-serif; ';
+	style+= 'font-family: ' + $('#WidgetFontFamily').val() + ', sans-serif; line-height: 1; ';
 %}
 <a href="javascript:void(0)">
 <span style="{%=style%}">{%=$('#WidgetTitle').val()%}</span>
