@@ -17,11 +17,16 @@ class CampaignsController extends UserAppController {
 	}
 
 	public function edit($id = 0) {
+		if ($id && !$this->Campaign->isAvail($id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			$this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+			return;
+		}
+		
 		if ($this->request->is(array('put', 'post'))) {
 			$this->request->data('Domain.user_id', $this->currUserID);
 			$this->request->data('Campaign.status', CampaignStatus::MODERATION);
 			
-			fdebug($this->request->data);
 			if ($this->Campaign->saveAll($this->request->data)) {
 				$this->setFlash(__('Your campaign has been saved'), 'success');
 				return $this->redirect(array('controller' => 'Campaigns', 'action' => 'index'));
@@ -38,6 +43,12 @@ class CampaignsController extends UserAppController {
 	}
 	
 	public function stats($id) {
+		if (!$this->Campaign->isAvail($id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			$this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+			return;
+		}
+		
 		$this->set('campaign', $this->Campaign->findById($id));
 		$this->set('aStats', array());
 	}

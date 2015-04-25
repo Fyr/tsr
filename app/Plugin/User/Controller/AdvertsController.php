@@ -19,11 +19,13 @@ class AdvertsController extends UserAppController {
 	}
 	
 	public function index($campaign_id) {
+		if (!$this->Campaign->isAvail($campaign_id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+		}
 		
 		$conditions = array('campaign_id' => $campaign_id);
-		
 		$conditions = $this->applyFilters($conditions);
-		
 		$order = 'Advert.created DESC';
 		$this->set('aAdverts', $this->Advert->find('all', compact('conditions', 'order')));
 		$this->set('aStatusOptions', $this->AdvertStatus->options());
@@ -32,6 +34,24 @@ class AdvertsController extends UserAppController {
 	}
 
 	public function edit($id = 0, $campaign_id = 0) {
+		$lAccess = true;
+		if ($campaign_id && !$this->Campaign->isAvail($campaign_id, $this->currUserID)) {
+			$lAccess = false;
+		} elseif ($id && !$this->Advert->isAvail($id, $this->currUserID)) {
+			$lAccess = false;
+		} elseif (!$id && !$campaign_id) {
+			$lAccess = false;
+		}
+		if (!$lAccess) {
+			if ($this->request->is('ajax')) {
+				$this->_response = array('status' => 'ERROR', 'errMsg' => __('You have no access'));
+			} else {
+				$this->setFlash(__('You have no access'), 'error');
+				$this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+			}
+			return;
+		}
+		
 		if ($this->request->is(array('put', 'post'))) {
 			$this->request->data('Advert.status', AdvertStatus::MODERATION);
 			if (!$this->request->data('AdvertMedia.id')) {
@@ -71,6 +91,11 @@ class AdvertsController extends UserAppController {
 	}
 	
 	public function delete($id) {
+		if (!$this->Advert->isAvail($id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+		}
+		
 		$rec = $this->Advert->findById($id);
 		if ($rec) {
 			$campaign_id = $rec['Advert']['campaign_id'];
@@ -82,6 +107,11 @@ class AdvertsController extends UserAppController {
 	}
 	
 	public function block($id, $blocked) {
+		if (!$this->Advert->isAvail($id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+		}
+		
 		$rec = $this->Advert->findById($id);
 		if ($rec) {
 			if ($blocked && $rec['Advert']['status'] == AdvertStatus::ACTIVE) {

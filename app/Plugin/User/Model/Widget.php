@@ -1,6 +1,7 @@
 <?
 App::uses('AppModel', 'Model');
 App::uses('UserAppModel', 'User.Model');
+App::uses('Campaign', 'User.Model');
 App::uses('WidgetByCategory', 'User.Model');
 
 class Widget extends UserAppModel {
@@ -70,7 +71,7 @@ class Widget extends UserAppModel {
 		),
 	);
 	
-	protected $WidgetByCategory;
+	protected $WidgetByCategory, $Campaign;
 	
 	public function checkHexColor($check) {
 		list($value) = array_values($check);
@@ -96,5 +97,13 @@ class Widget extends UserAppModel {
 				$this->WidgetByCategory->save(array('widget_id' => $this->id, 'category_id' => $cat_id));
 			}
 		}
+	}
+	
+	public function isAvail($id, $user_id) {
+		$this->loadModel('User.Campaign');
+		$ids = $this->Campaign->idsAvail($user_id);
+		
+		$conditions = array('Widget.id' => $id, 'Widget.campaign_id' => $ids);
+		return $this->find('first', compact('conditions'));
 	}
 }

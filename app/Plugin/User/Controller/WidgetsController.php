@@ -8,10 +8,13 @@ class WidgetsController extends UserAppController {
 	public $uses = array('User.Campaign', 'User.WidgetStatus', 'User.Widget', 'User.WidgetCategory', 'User.WidgetByCategory');
 	
 	public function index($campaign_id) {
+		if (!$this->Campaign->isAvail($campaign_id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+		}
+		
 		$conditions = array('campaign_id' => $campaign_id);
-		
 		$conditions = $this->applyFilters($conditions);
-		
 		$order = 'created DESC';
 		$this->set('aWidgets', $this->Widget->find('all', compact('conditions', 'order')));
 		$this->set('aStatusOptions', $this->WidgetStatus->options());
@@ -19,6 +22,19 @@ class WidgetsController extends UserAppController {
 	}
 
 	public function edit($id = 0, $campaign_id = 0) {
+		$lAccess = true;
+		if ($campaign_id && !$this->Campaign->isAvail($campaign_id, $this->currUserID)) {
+			$lAccess = false;
+		} elseif ($id && !$this->Widget->isAvail($id, $this->currUserID)) {
+			$lAccess = false;
+		} elseif (!$id && !$campaign_id) {
+			$lAccess = false;
+		}
+		if (!$lAccess) {
+			$this->setFlash(__('You have no access'), 'error');
+			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+		}
+		
 		if ($this->request->is(array('put', 'post'))) {
 			$this->request->data('Widget.status', WidgetStatus::MODERATION);
 			if ($this->Widget->save($this->request->data)) {
@@ -41,6 +57,11 @@ class WidgetsController extends UserAppController {
 	}
 	
 	public function delete($id) {
+		if (!$this->Widget->isAvail($id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+		}
+		
 		$rec = $this->Widget->findById($id);
 		if ($rec) {
 			$campaign_id = $rec['Widget']['campaign_id'];
@@ -52,6 +73,11 @@ class WidgetsController extends UserAppController {
 	}
 	
 	public function block($id, $blocked) {
+		if (!$this->Widget->isAvail($id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+		}
+		
 		$rec = $this->Widget->findById($id);
 		if ($rec) {
 			if ($blocked && $rec['Widget']['status'] == WidgetStatus::ACTIVE) {
@@ -68,6 +94,11 @@ class WidgetsController extends UserAppController {
 	}
 	
 	public function stats($id) {
+		if (!$this->Widget->isAvail($id, $this->currUserID)) {
+			$this->setFlash(__('You have no access'), 'error');
+			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+		}
+		
 		$rec = $this->Widget->findById($id);
 		
 		$this->set('aStats', array());

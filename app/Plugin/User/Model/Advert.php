@@ -2,6 +2,7 @@
 App::uses('AppModel', 'Model');
 App::uses('Media', 'Media.Model');
 App::uses('UserAppModel', 'User.Model');
+App::uses('Campaign', 'User.Model');
 
 define('ADVERT_MAX_TITLE_LEN', Configure::read('Advert.maxTitleLen'));
 define('ADVERT_MAX_DESCR_LEN', Configure::read('Advert.maxDescrLen'));
@@ -9,7 +10,7 @@ define('ADVERT_CHK_LEN_TITLE', __('Length of this field must be between %s and %
 define('ADVERT_CHK_LEN_DESCR', __('Length of this field must be between %s and %s characters', 3, ADVERT_MAX_DESCR_LEN));
 
 class Advert extends UserAppModel {
-	// public $belongsTo = array('User.CampaignCategory');
+	// public $belongsTo = array('User.Campaign');
 	public $hasOne = array(
 		'AdvertMedia' => array(
 			'className' => 'Media.Media',
@@ -52,4 +53,14 @@ class Advert extends UserAppModel {
 			),
 		),
 	);
+	
+	protected $Campaign;
+	
+	public function isAvail($id, $user_id) {
+		$this->loadModel('User.Campaign');
+		$ids = $this->Campaign->idsAvail($user_id);
+		
+		$conditions = array('Advert.id' => $id, 'Advert.campaign_id' => $ids);
+		return $this->find('first', compact('conditions'));
+	}
 }
