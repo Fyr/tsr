@@ -1,3 +1,7 @@
+<?
+	$fullImgW = 550;
+	$previewImgW = 150;
+?>
 <style type="text/css">
 .previewAdsImage .tizer {
 	width: 150px;
@@ -23,7 +27,7 @@
 .previewAdsImage .fullImage {
 }
 .previewAdsImage .fullImage, .previewAdsImage .fullImage img {
-	width: 370px;
+	width: <?=$fullImgW?>px;
 }
 </style>
 <?
@@ -67,7 +71,7 @@
 	}
 ?>
 			<div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-4">
 					<div class="form-group">
 						<label><?=__('Link')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Описание"></i>
 						<?=$this->Form->input('Advert.url', array('class' => 'form-control', 'label' => false, 'div' => false))?>
@@ -114,7 +118,7 @@
 						<img src="/img/ajax_loader.gif" alt="" /> <?=__('Saving advert...')?>
                     </div>
 				</div>
-				<div class="col-sm-6 previewAdsImage clearfix">
+				<div class="col-sm-8 previewAdsImage clearfix">
 					<div class="tizer">
 						<div class="previewText"><?=__('Preview')?></div>
 						<div class="previewImg">
@@ -134,8 +138,11 @@
 	</div>
 </div>
 <script type="text/javascript">
-var tpl, maxTitleLen, maxDescrLen;
+var tpl, maxTitleLen, maxDescrLen, fullImgW, previewImgW;
 $(document).ready(function(){
+	fullImgW = <?=$fullImgW?>;
+	previewImgW = <?=$previewImgW?>;
+	
 	tpl = '<?=__('%s chars left')?>';
 	maxTitleLen = <?=Configure::read('Advert.maxTitleLen')?>;
 	maxDescrLen = <?=Configure::read('Advert.maxDescrLen')?>;
@@ -198,8 +205,8 @@ $(document).ready(function(){
 	if ($this->request->data('AdvertMedia.id')) {
 		$crop = $this->request->data('AdvertMedia.crop');
 ?>
-	iW = 370; 
-	resizeAspect = 370 / <?=$this->request->data('AdvertMedia.orig_w')?>;
+	iW = fullImgW; 
+	resizeAspect = fullImgW / <?=$this->request->data('AdvertMedia.orig_w')?>;
 	iH = resizeAspect * <?=$this->request->data('AdvertMedia.orig_h')?>;
 	
 	var previewImg = $('.previewAdsImage .tizer img').get(0);
@@ -306,8 +313,8 @@ function jcropInit(data) {
    			
    			$(img).show();
    		
-	   		resizeAspect = 370 / iW;
-	   		$(img).prop('width', iW = 370);
+	   		resizeAspect = fullImgW / iW;
+	   		$(img).prop('width', iW = fullImgW);
 	   		$(img).prop('height', iH = iH * resizeAspect);
 	   		
 	   		$(previewImg).prop('width', iW);
@@ -348,8 +355,8 @@ function saveJcropData(c) {
 	
 	var $previewImg = $('.previewAdsImage .tizer img');
 	
-	$previewImg.prop('width', nW = 150 * iW / c.w);
-	$previewImg.prop('height', nH = 150 * iH / c.h);
+	$previewImg.prop('width', nW = previewImgW * iW / c.w);
+	$previewImg.prop('height', nH = previewImgW * iH / c.h);
 	
 	$previewImg.css('left', (-c.x * nW / iW) + 'px');
 	$previewImg.css('top', (-c.y * nH / iH) + 'px');
