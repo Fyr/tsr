@@ -12,7 +12,7 @@ if ($widget = $widget['Widget']) {
 	if ($.inArray($('#WidgetImagePos').val(), ['above', 'behind']) >= 0) {
 		style = 'width: ' + $('#WidgetImageSize').val() + 'px; margin: ' + $('#WidgetImageMargin').val() + 'px';
 	} else {
-		var w = Math.floor($('#WidgetWidth').val() / $('#WidgetCols').val() - $('#WidgetBorderImgSize').val());
+		var w = Math.floor($('#WidgetWidth').val() / $('#WidgetCols').val() - $('#WidgetBorderOuterSize').val());
 		style = 'width: ' + w + 'px; padding: ' + $('#WidgetImageMargin').val() + 'px; ';
 	}
 	*/
@@ -21,7 +21,7 @@ if ($widget = $widget['Widget']) {
 		$style['width'] = $widget['image_size'].'px';
 		$style['margin'] = $widget['image_margin'].'px';
 	} else {
-		$style['width'] = floor($widget['width'] / $widget['cols'] - $widget['image_margin'] * 2 - 1).'px';
+		$style['width'] = floor($widget['width'] / $widget['cols'] - $widget['image_margin'] * 2 - $widget['border_outer_size'] * 2 - 1).'px';
 		$style['margin'] = $widget['image_margin'].'px';
 	}
 	for($i = 0; $i < $widget['rows']; $i++) {

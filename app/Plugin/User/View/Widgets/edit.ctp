@@ -39,7 +39,7 @@
 		'border_img_color' => '#dddddd',
 	);
 	if (!$id) {
-		$this->request->data['Widget'] = Hash::merge($defaults, $this->request->data['Widget']);
+		$this->request->data['Widget'] = $defaults;
 	}
 ?>
 <div class="clearfix">
@@ -60,7 +60,6 @@
 		)
 	));
 	echo $this->Form->hidden('id');
-	echo $this->Form->hidden('campaign_id');
 ?>
 	<div class="panel panel-default">
 		<div class="panel-body">
@@ -285,6 +284,11 @@ $(document).ready(function(){
 		e.stopPropagation();
 		updatePreviewWidget();
 	});
+	$('#WidgetTitle, #WidgetRows, #WidgetCols, #WidgetBorderOuterSize, #WidgetBorderImgSize, #WidgetImageMargin, #WidgetWidth, #WidgetFontSize, #WidgetCustomImageSize').change(function(e){
+		e.stopPropagation();
+		updatePreviewWidget();
+	});
+	
 	$('#WidgetImageSize, #WidgetImagePos, #WidgetBorderOuterColor, #WidgetBorderImgColor, #WidgetBkgColor, #WidgetFontColor, #WidgetFontWeight, #WidgetFontFamily').change(function(e){
 		e.stopPropagation();
 		updatePreviewWidget();
@@ -349,7 +353,7 @@ function updatePreviewWidget() {
 	if ($.inArray($('#WidgetImagePos').val(), ['above', 'behind']) >= 0) {
 		style = 'width: ' + $('#WidgetImageSize').val() + 'px; margin: ' + $('#WidgetImageMargin').val() + 'px';
 	} else {
-		var w = Math.floor($('#WidgetWidth').val() / $('#WidgetCols').val() - 2 * $('#WidgetImageMargin').val() - $('#WidgetBorderImgSize').val());
+		var w = Math.floor($('#WidgetWidth').val() / $('#WidgetCols').val() - 2 * $('#WidgetImageMargin').val() - 2 * $('#WidgetBorderOuterSize').val());
 		style = 'width: ' + w + 'px; margin: ' + $('#WidgetImageMargin').val() + 'px; ';
 	}
 %}

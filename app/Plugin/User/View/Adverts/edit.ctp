@@ -62,22 +62,15 @@
 <div class="panel panel-default">
 	<div class="panel-body">
 		<?=$this->Form->create('Advert', array('class' => 'ls_form'))?>
-		<?=$this->Form->hidden('Advert.id')?>
-		<?=$this->Form->hidden('Advert.campaign_id')?>
-		<?=$this->Form->hidden('AdvertMedia.id')?>
-<?
-	if ($crop = $this->request->data('AdvertMedia.crop')) {
-		echo $this->Form->hidden('AdvertMedia.crop', array('value' => ''));
-	}
-?>
+		<?=$this->Form->hidden('AdvertMedia.crop', array('value' => ''))?>
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="form-group">
-						<label><?=__('Link')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Описание"></i>
+						<label><?=__('Link')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('URL for your advert')?>"></i>
 						<?=$this->Form->input('Advert.url', array('class' => 'form-control', 'label' => false, 'div' => false))?>
 					</div>
 					<div class="form-group clearfix">
-						<label><?=__('Title')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Your title should be less then %s chars', Configure::read('Advert.maxTitleLen'))?>"></i>
+						<label><?=__('Title')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Title must be less then %s chars', Configure::read('Advert.maxTitleLen'))?>"></i>
 <?
 	if (!$id) {
 		$this->request->data('Advert.title', 'Default advert title...');
@@ -94,15 +87,19 @@
 						<span id="AdvertDescrCharsLeft" class="small pull-right"></span>
 					</div>
 					<div class="form-group">
-						<label><?=__('Image')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="Описание"></i>
+						<label><?=__('Image')?></label> <i class="fa fa-info-circle tooltipLink" data-placement="top" data-toggle="tooltip" data-original-title="<?=__('Input image URL or browse from your local drive')?>"></i>
 						<div class="row">
-							<!--
 							<div class="col-sm-8">
-								<?=$this->Form->input('img_url', array('class' => 'form-control', 'label' => false, 'div' => false))?>
+								<div class="input-group">
+									<?=$this->Form->input('Advert.img_url', array('class' => 'form-control', 'label' => false, 'div' => false, 'placeholder' => __('Image URL...')))?>
+									<span class="input-group-btn">
+										<button id="updateImageURL" class="btn btn-default" type="button"><i class="fa fa-refresh"></i></button>
+									</span>
+								</div>
+								<div class="error-message" style="display: none;"><?=__('Incorrect image URL')?></div>
 							</div>
-							-->
 							<div class="col-sm-4">
-							<input id="advertImageChoose" class="fileuploader" type="file" data-object_type="Advert" data-object_id="<?=$id?>" data-progress_id="progress-Advert<?=$id?>" accept="image/*"/>
+								<input id="advertImageChoose" class="fileuploader" type="file" data-object_type="Advert" data-object_id="<?=$id?>" data-progress_id="progress-Advert<?=$id?>" accept="image/*"/>
 							</div>
 						</div>
 					</div>
@@ -122,7 +119,13 @@
 					<div class="tizer">
 						<div class="previewText"><?=__('Preview')?></div>
 						<div class="previewImg">
-							<img alt="" src="<?=$this->Media->imageUrl($this->request->data('AdvertMedia'), 'noresize')?>">
+<?
+	if ($this->request->data('AdvertMedia.id')) {
+		echo $this->Html->image($this->Media->imageUrl($this->request->data('AdvertMedia'), 'noresize'));
+	} else {
+		echo $this->Html->image('/img/widget_default_img.png', array('width' => 150));
+	}
+?>
 						</div>
 						<div class="title"></div>
 						<div class="description"></div>
@@ -157,48 +160,73 @@ $(document).ready(function(){
 		updatePreview();
 	});
 	
+	$('#AdvertAdvertCategoryId').change(function(){
+		updatePreview();
+	});
+	
+	$('#AdvertImgUrl').focus(function(){
+		$(this).select();
+	});
+	
+	$('#updateImageURL').click(function(){
+		checkImageURL(function(){ 
+			$('#btnSave').data(false);
+			jcrop_data = [];
+			jcropInit($('#AdvertImgUrl').val()); 
+		});
+	});
+	
+	$('#AdvertImgUrl').change(function(){
+		checkImageURL(function(){ 
+			$('#btnSave').data(false);
+			jcrop_data = [];
+			jcropInit($('#AdvertImgUrl').val()); 
+		});
+	});
+	
 	updateCharsLeft('AdvertTitle', maxTitleLen);
 	updateCharsLeft('AdvertDescr', maxDescrLen);
 	updatePreview();
 	
-	$('#advertImageChoose').styler({fileBrowse: '<?=__('Choose image')?>'});
+	$('#advertImageChoose').styler({fileBrowse: '<?=__('Browse')?>'});
 	
 	$('#btnSave').click(function(){
-		$('#control-Buttons').hide();
-		$('#control-Process').show();
-		$('#advertImageChoose').hide();
-		
-		$('.error-message').remove();
-		$('.form-error').removeClass('form-error');
-		
-		if (jcrop_data.length) {
-			$('#AdvertMediaCrop').val(jcrop_data.join(','));
-		}
-		var url = '<?=$this->Html->url(array('controller' => 'Adverts', 'action' => 'edit', $id))?>.json';
-		$.post(url, $('#AdvertEditForm').serialize(), function(response){
-			if (checkJson(response)) {
-				advertData = response.data.Advert;
-				
-				$('#advertImageChoose').data('object_id', advertData.id);
-				
-				var imgData = $('#btnSave').data();
-				var lUploadImage = imgData && Object.keys(imgData).length;
-				if (lUploadImage) {
-					imgData.submit();
-				} else {
-					window.location.href = mediaURL.redir;
-				}
-			} else if (response.invalidFields) {
-				for(var key in response.invalidFields) {
-					var div = $('<div />').addClass('error-message').html(response.invalidFields[key][0]);
-					$('input[name="data[Advert][' + key + ']"], textarea[name="data[Advert][' + key + ']"]').addClass('form-error').parent().append(div);
-				}
-				
-				$('#control-Buttons').show();
-				$('#control-Process').hide();
-				$('#advertImageChoose').show();
+		checkImageURL(function(){
+			$('#control-Buttons').hide();
+			$('#control-Process').show();
+			$('#advertImageChoose').hide();
+			
+			$('.error-message').remove();
+			$('.form-error').removeClass('form-error');
+			
+			var imgData = $('#btnSave').data();
+			var lUploadImage = imgData && Object.keys(imgData).length;
+			
+			if (jcrop_data.length && !lUploadImage) {
+				$('#AdvertMediaCrop').val(jcrop_data.join(','));
 			}
-		}, 'json');
+			var url = $('#AdvertEditForm').prop('action') + '.json';
+			$.post(url, $('#AdvertEditForm').serialize(), function(response){
+				if (checkJson(response)) {
+					$('#advertImageChoose').data('object_id', response.data.id);
+					if (lUploadImage) {
+						imgData.submit();
+					} else {
+						window.location.href = mediaURL.redir;
+					}
+				} else {
+					$('#control-Buttons').show();
+					$('#control-Process').hide();
+					$('#advertImageChoose').show();
+					if (response.invalidFields) {
+						for(var key in response.invalidFields) {
+							var div = $('<div />').addClass('error-message').html(response.invalidFields[key][0]);
+							$('input[name="data[Advert][' + key + ']"], textarea[name="data[Advert][' + key + ']"]').addClass('form-error').parent().append(div);
+						}
+					}
+				}
+			}, 'json');			
+		});
 	});
 	
 <?
@@ -248,6 +276,44 @@ function updatePreview() {
 	$('.previewAdsImage .tizer .category').html($('#control-Category .selectize-input .item').html());
 }
 
+function checkImageURL(successFn, errorFn) {
+	var url = $('#AdvertImgUrl').val();
+	$('#AdvertImgUrl').removeClass('form-error');
+	$('#AdvertImgUrl').parent().parent().find('.error-message').hide();
+	
+	if (!errorFn) {
+		errorFn = function() {
+			$('#AdvertImgUrl').addClass('form-error');
+			$('#AdvertImgUrl').parent().parent().find('.error-message').show();
+		}
+	}
+	if (url) {
+		timeout = 5000;
+		var timedOut = false, timer;
+		var img = new Image();
+		img.onerror = img.onabort = function() {
+			if (!timedOut) {
+				clearTimeout(timer);
+				errorFn();
+			}
+		};
+		img.onload = function() {
+			if (!timedOut) {
+				clearTimeout(timer);
+				successFn();
+			}
+		};
+		img.src = url;
+		timer = setTimeout(function() {
+			timedOut = true;
+			// timeout for downloading image
+			errorFn();
+		}, timeout); 
+	} else {
+		successFn();
+	}
+}
+
 var jcrop_api, jcrop_data = [], iW, iH, resizeAspect;
 var mediaURL, advertData, advert_id;
 
@@ -262,8 +328,8 @@ $(function () {
 		dataType: 'json',
 		done: function (e, data) {
 			var file = data.result.files[0];
-			file.object_type = $(data.fileInput).data('object_type');
-			file.object_id = $(data.fileInput).data('object_id');
+			file.object_type = 'Advert';
+			file.object_id = $('#advertImageChoose').data('object_id');
 			file.crop = jcrop_data;
 			
 			$.post(mediaURL.move, file, function(response){
@@ -277,63 +343,67 @@ $(function () {
 				return false;
 			}
 			$('#btnSave').data(data);
-			jcropInit(data);
+			jcropFromFile(data.files[0]);
 		}
 	}).prop('disabled', !$.support.fileInput)
 		.parent().addClass($.support.fileInput ? undefined : 'disabled');
 });
 
-function jcropInit(data) {
+function jcropFromFile(file) {
 	var oFReader = new FileReader();
-	oFReader.readAsDataURL(data.files[0]);
+	oFReader.readAsDataURL(file);
 
 	oFReader.onload = function (oFREvent) {
-		if (jcrop_api) {
-			jcrop_api.destroy();
-		}
-		$('.previewAdsImage .fullImage img').remove();
-		$('.previewAdsImage .fullImage').append('<img id="tempImg" src="" alt="" />');
-		
-		var img = $('img#tempImg').get(0);
-		var previewImg = $('.previewAdsImage .tizer img').get(0);
-		$(previewImg).hide().prop('src', oFREvent.target.result);
-   		$(img).hide().prop('src', oFREvent.target.result);
-   		
-   		var count = 0;
-   		var timer = setInterval(function(){
-   			iW = img.width, iH = img.height;
-   			if (count > 50) {
-   				alert('Your photo is too large. Please upload another one');
-   			}
-   			if (iW < 5) {
-   				count++;
-   				return;
-   			}
-   			clearInterval(timer);
-   			
-   			$(img).show();
-   		
-	   		resizeAspect = fullImgW / iW;
-	   		$(img).prop('width', iW = fullImgW);
-	   		$(img).prop('height', iH = iH * resizeAspect);
-	   		
-	   		$(previewImg).prop('width', iW);
-	   		$(previewImg).prop('height', iH);
-			$(previewImg).show();
-	   		
-	   		var min = Math.min(iW, iH);
-			$(img).Jcrop({
-				aspectRatio: 1 / 1,
-				bgOpacity: 0.5,
-				setSelect: [ 20, 20, min - 20, min - 20],
-				minSize: [100, 100],
-				onSelect: saveJcropData,
-        		onChange: saveJcropData
-			}, function(){
-			    jcrop_api = this;
-			});
-   		}, 100);
+		jcropInit(oFREvent.target.result);
 	}
+}
+
+function jcropInit(src) {
+	if (jcrop_api) {
+		jcrop_api.destroy();
+	}
+	$('.previewAdsImage .fullImage img').remove();
+	$('.previewAdsImage .fullImage').append('<img id="tempImg" src="" alt="" />');
+	
+	var img = $('img#tempImg').get(0);
+	var previewImg = $('.previewAdsImage .tizer img').get(0);
+	$(previewImg).hide().prop('src', src);
+	$(img).hide().prop('src', src);
+		
+	var count = 0;
+	var timer = setInterval(function(){
+		iW = img.width, iH = img.height;
+		if (count > 50) {
+			alert('Your photo is too large. Please upload another one');
+		}
+		if (iW < 5) {
+			count++;
+			return;
+		}
+		clearInterval(timer);
+		
+		$(img).show();
+	
+   		resizeAspect = fullImgW / iW;
+   		$(img).prop('width', iW = fullImgW);
+   		$(img).prop('height', iH = iH * resizeAspect);
+   		
+   		$(previewImg).prop('width', iW);
+   		$(previewImg).prop('height', iH);
+		$(previewImg).show();
+   		
+   		var min = Math.min(iW, iH);
+		$(img).Jcrop({
+			aspectRatio: 1 / 1,
+			bgOpacity: 0.5,
+			setSelect: [ 20, 20, min - 20, min - 20],
+			minSize: [100, 100],
+			onSelect: saveJcropData,
+    		onChange: saveJcropData
+		}, function(){
+		    jcrop_api = this;
+		});
+	}, 100);
 }
 
 function getFileType(file) {

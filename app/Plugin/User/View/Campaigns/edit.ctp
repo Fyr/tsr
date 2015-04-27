@@ -15,8 +15,6 @@
 <div class="panel panel-default">
 	<div class="panel-body">
 		<?=$this->Form->create('Campaign', array('class' => 'form-horizontal ls_form'))?>
-			<?=$this->Form->hidden('Domain.id')?>
-			<?=$this->Form->hidden('Campaign.id')?>
 			<div>
 				<h5><?=__('Your site')?></h5>
 			</div>

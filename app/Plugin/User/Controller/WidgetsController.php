@@ -27,15 +27,26 @@ class WidgetsController extends UserAppController {
 			$lAccess = false;
 		} elseif ($id && !$this->Widget->isAvail($id, $this->currUserID)) {
 			$lAccess = false;
-		} elseif (!$id && !$campaign_id) {
-			$lAccess = false;
 		}
 		if (!$lAccess) {
 			$this->setFlash(__('You have no access'), 'error');
 			return $this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
 		}
 		
+		$widget = ($id) ? $this->Widget->findById($id) : array();
+		if ($widget) {
+			$campaign_id = $widget['Widget']['campaign_id'];
+		}
+		
+		if (!$id && !$campaign_id) {
+			$errMsg = 'Incorrect URL';
+			$this->setFlash($errMsg, 'error');
+			$this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+			return;
+		}
+		
 		if ($this->request->is(array('put', 'post'))) {
+			$this->request->data('Widget.campaign_id', $campaign_id);
 			$this->request->data('Widget.status', WidgetStatus::MODERATION);
 			if ($this->Widget->save($this->request->data)) {
 				$this->setFlash(__('Your widget has been saved'), 'success');
@@ -44,14 +55,10 @@ class WidgetsController extends UserAppController {
 				$this->setFlash(__('Form could not be saved! Please, check errors'), 'error');
 			}
 		} else {
-			$this->request->data = $this->Widget->findById($id);
+			$this->request->data = $widget;
 		}
 		
-		if ($campaign_id) {
-			$this->request->data('Widget.campaign_id', $campaign_id);
-		}
-		
-		$this->set('campaign', $this->Campaign->findById($this->request->data('Widget.campaign_id')));
+		$this->set('campaign', $this->Campaign->findById($campaign_id));
 		$this->set('aCategoryOptions', $this->WidgetCategory->getObjectOptions());
 		$this->set('widgetsByCat', $this->WidgetByCategory->getCategories($id));
 	}

@@ -31,7 +31,7 @@ class AjaxController extends PAjaxController {
 			$crop = (is_array($crop)) ? implode(',', $crop): $crop;
 		}
 		
-		if ($object_type == 'Advert') {
+		if ($object_type == 'Advert' && $object_id) {
 			$aMedia = $this->Media->getObjectList($object_type, $object_id);
 			foreach($aMedia as $media) {
 				$this->Media->delete($media['Media']['id']);

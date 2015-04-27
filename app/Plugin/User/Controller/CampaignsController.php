@@ -23,9 +23,15 @@ class CampaignsController extends UserAppController {
 			return;
 		}
 		
+		$campaign = ($id) ? $this->Campaign->findById($id) : array();
+		
 		if ($this->request->is(array('put', 'post'))) {
 			$this->request->data('Domain.user_id', $this->currUserID);
 			$this->request->data('Campaign.status', CampaignStatus::MODERATION);
+			if ($id) {
+				$this->request->data('Domain.id', $campaign['Domain']['id']);
+				$this->request->data('Campaign.id', $campaign['Campaign']['id']);
+			}
 			
 			if ($this->Campaign->saveAll($this->request->data)) {
 				$this->setFlash(__('Your campaign has been saved'), 'success');
@@ -34,7 +40,7 @@ class CampaignsController extends UserAppController {
 				$this->setFlash(__('Form could not be saved! Please, check errors below'), 'error');
 			}
 		} else {
-			$this->request->data = $this->Campaign->findById($id);
+			$this->request->data = $campaign;
 		}
 		
 		$this->set('aDomainOptions', $this->Domain->options());

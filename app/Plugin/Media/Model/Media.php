@@ -73,9 +73,9 @@ class Media extends AppModel {
     /**
      * Uploades media file into auto-created folder
      *
-     * @param array $data - array. Must contain elements: 'media_type', 'object_type', 'object_id', 'tmp_name', 'file', 'ext'
-     *                      tmp_name - temp file to rename to media folders
-     *                      real_name - if image is relocated or copied
+     * @param array $data - array. Must contain elements: 'media_type', 'object_type', 'object_id', 'tmp_name' or 'real_name', 'file', 'ext'
+     *                      'tmp_name' - temp file to rename to media folders
+     *                      or 'real_name' - if image is relocated or copied
      *                      file.ext - final name of file
      */
     public function uploadMedia($data) {
@@ -100,6 +100,7 @@ class Media extends AppModel {
 		}
 		
 		if (isset($real_name)) { // if image is simply relocated
+			// TODO: handle copy error
 			copy($real_name, $path.$file.$ext);
 			$res = false;
 		} else { // image was uploaded
@@ -120,7 +121,7 @@ class Media extends AppModel {
 			$image = new Image();
 			$image->load($file);
 			$this->save(array('id' => $id, 'orig_w' => $image->getSizeX(), 'orig_h' => $image->getSizeY(), 'orig_fsize' => filesize($file)));
-			if ($crop) {
+			if (isset($crop) && $crop) {
 				//prepare thumb for future operations
 				list($x, $y, $sizeX, $sizeY) = explode(',', $crop);
 				$image->crop($x, $y, $sizeX, $sizeY);
@@ -130,7 +131,7 @@ class Media extends AppModel {
 			$this->initMain($object_type, $object_id);
 		} else {
 			// for non-image files save filesize
-			$this->save(array('id' => $id, 'orig_fsize' => filesize($file)));
+			$this->save(array('id' => $id, 'orig_fsize' => filesize($path.$file.$ext)));
 		}
 		return $id;
     }
@@ -239,7 +240,7 @@ class Media extends AppModel {
 			}
 		}
 		$image->outputPng($this->PHMedia->getFileName($object_type, $id, null, 'thumb.png'));
-		return $this->save(array('id' => $id, $crop));
+		return $this->save(array('id' => $id, 'crop' => $crop));
 	}
 	
 }

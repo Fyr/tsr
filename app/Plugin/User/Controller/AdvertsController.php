@@ -39,14 +39,29 @@ class AdvertsController extends UserAppController {
 			$lAccess = false;
 		} elseif ($id && !$this->Advert->isAvail($id, $this->currUserID)) {
 			$lAccess = false;
-		} elseif (!$id && !$campaign_id) {
-			$lAccess = false;
 		}
 		if (!$lAccess) {
+			$errMsg = __('You have no access');
 			if ($this->request->is('ajax')) {
-				$this->_response = array('status' => 'ERROR', 'errMsg' => __('You have no access'));
+				$this->_response = array('status' => 'ERROR', 'errMsg' => $errMsg);
 			} else {
-				$this->setFlash(__('You have no access'), 'error');
+				$this->setFlash($errMsg, 'error');
+				$this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
+			}
+			return;
+		}
+		
+		$advert = ($id) ? $this->Advert->findById($id) : array();
+		if ($advert) {
+			$campaign_id = $advert['Advert']['campaign_id'];
+		}
+		
+		if (!$id && !$campaign_id) {
+			$errMsg = 'Incorrect URL';
+			if ($this->request->is('ajax')) {
+				$this->_response = array('status' => 'ERROR', 'errMsg' => $errMsg);
+			} else {
+				$this->setFlash($errMsg, 'error');
 				$this->redirect(array('controller' => 'Dashboard', 'action' => 'index'));
 			}
 			return;
@@ -54,39 +69,65 @@ class AdvertsController extends UserAppController {
 		
 		if ($this->request->is(array('put', 'post'))) {
 			$this->request->data('Advert.status', AdvertStatus::MODERATION);
-			if (!$this->request->data('AdvertMedia.id')) {
-				unset($this->request->data['AdvertMedia']);
+			if ($id) {
+				$this->request->data('Advert.id', $id);
+				$this->request->data('Advert.campaign_id', $advert['Advert']['campaign_id']);
+			} else {
+				$this->request->data('Advert.campaign_id', $campaign_id);
 			}
-			if (!$this->request->data('AdvertMedia.crop')) {
-				unset($this->request->data['AdvertMedia']);
-			}
-			if ($this->Advert->saveAll($this->request->data)) {
-				// TODO: если картинка не загружалась, но изменился crop - то нужно перерезать thumb или не сохранять его
-				if (($media_id = $this->request->data('AdvertMedia.id')) && ($crop = $this->request->data('AdvertMedia.crop'))) {
-					$this->Media->recrop($media_id, $crop);
+			
+			if ($this->Advert->save($this->request->data)) {
+				if (!$id) {
+					$id = $this->Advert->id;
 				}
+				
+				$media = $this->Media->getObject('Advert', $id);
+				$crop = $this->request->data('AdvertMedia.crop');
+				if ($imgURL = $this->request->data('Advert.img_url')) {
+					// remove prev.image
+					if ($media) {
+						$this->Media->delete($media['Media']['id']);
+					}
+					
+					// upload new image from URL
+					$path = pathinfo($imgURL);
+					$data = array(
+						'media_type' => 'image',
+						'object_type' => 'Advert',
+						'object_id' => $id,
+						'real_name' => $imgURL,
+						'file' => 'image',
+						'ext' => '.'.$path['extension'],
+						'orig_fname' => $path['basename']
+					);
+					if ($crop = $this->request->data('AdvertMedia.crop')) {
+						$data['crop'] = $crop;
+					}
+					$this->Media->uploadMedia($data);
+				} elseif ($media && $crop) {
+					$this->Media->recrop($media['Media']['id'], $crop);
+				}
+				
 				$this->setFlash(__('Your advert has been saved'), 'success');
 				if ($this->request->is('ajax')) {
-					$this->_response = array('status' => 'OK', 'data' => $this->Advert->findById($this->Advert->id));
+					$advert = $this->Advert->findById($id);
+					$this->_response = array('status' => 'OK', 'data' => $advert['Advert']);
 					return;
 				}
 				return $this->redirect(array('controller' => 'Adverts', 'action' => 'index', $this->request->data('Advert.campaign_id')));
 			} else {
+				$errMsg = __('Form could not be saved! Please, check errors');
 				if ($this->request->is('ajax')) {
-					$this->_response = array('status' => 'ERROR', 'errMsg' => __('Form could not be saved! Please, check errors'), 'invalidFields' => $this->Advert->invalidFields());
+					$this->_response = array('status' => 'ERROR', 'errMsg' => $errMsg, 'invalidFields' => $this->Advert->invalidFields());
 				} else {
-					$this->setFlash(__('Form could not be saved! Please, check errors'), 'error');
+					$this->setFlash($errMsg, 'error');
 				}
 			}
 		} else {
-			$this->request->data = $this->Advert->findById($id);
+			$this->request->data = $advert;
 		}
 		
-		if ($campaign_id) {
-			$this->request->data('Advert.campaign_id', $campaign_id);
-		}
-		
-		$this->set('campaign', $this->Campaign->findById($this->request->data('Advert.campaign_id')));
+		$this->set('campaign', $this->Campaign->findById($campaign_id));
 		$this->set('aCategoryOptions', $this->AdvertCategory->getObjectOptions());
 	}
 	
