@@ -8,6 +8,9 @@
 	$actions['table']['add']['label'] = $createTitle;
 	
 	$backURL = $this->Html->url(array('action' => 'index'));
+	unset($actions['row']['delete']); // delete icon - last in list
+	$settingsURL = $this->Html->url(array('plugin' => 'user', 'controller' => 'Campaigns', 'action' => 'edit')).'/{$id}';
+	$actions['row']['settings'] = $this->Html->link('', $settingsURL, array('class' => 'icon-color icon-wrench', 'title' => __('User settings')));
 	$deleteURL = $this->Html->url(array('action' => 'delete')).'/{$id}?model='.$objectType.'&backURL='.urlencode($backURL);
 	$actions['row']['delete'] = $this->Html->link('', $deleteURL, array('class' => 'icon-color icon-delete', 'title' => __('Delete record')), __('Are you sure to delete this record?'));
 ?>

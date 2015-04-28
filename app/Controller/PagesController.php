@@ -1,5 +1,8 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('User', 'Model');
+App::uses('UserGroup', 'Model');
+App::uses('Page', 'Model');
 class PagesController extends AppController {
 	public $name = 'Pages';
 	public $uses = array('User', 'Page');
@@ -8,7 +11,7 @@ class PagesController extends AppController {
 	public function home() {
 		if ($this->request->is(array('put', 'post'))) {
 			if ($this->request->data('action') == 'signup') {
-				$this->request->data('User.user_group_id', 2);
+				$this->request->data('User.user_group_id', UserGroup::PUBLISHER);
 				if ($this->User->save($this->request->data('User'))) {
 					if ($this->Auth->login()) {
 						return $this->redirect($this->Auth->loginRedirect);

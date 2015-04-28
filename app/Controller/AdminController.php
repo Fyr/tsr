@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('UserGroup', 'Model');
 class AdminController extends AppController {
 	public $name = 'Admin';
 	public $layout = 'admin';
@@ -34,14 +35,15 @@ class AdminController extends AppController {
 	}
 	
 	public function beforeFilter() {
-		/*
-		$this->loadModel('Section');
-		foreach($this->Section->find('list') as $id => $title) {
-			$this->aNavBar['Products']['submenu'][] = array(
-				'label' => $title, 'href' => array('controller' => 'AdminProducts', 'Product.section' => $id)
+		if (!$this->isAdmin()) {
+			$this->aNavBar = array(
+				'Campaigns' => array('label' => __('Campaigns'), 'href' => '', 'submenu' => array(
+					array('label' => __('Campaigns'), 'href' => array('controller' => 'AdminCampaigns', 'action' => 'index')),
+					array('label' => __('Adverts'), 'href' => array('controller' => 'AdminAdverts', 'action' => 'index')),
+					array('label' => __('Widgets'), 'href' => array('controller' => 'AdminWidgets', 'action' => 'index')),
+				))
 			);
 		}
-		*/
 	    $this->currMenu = $this->_getCurrMenu();
 	    $this->currLink = $this->currMenu;
 	}
@@ -51,16 +53,16 @@ class AdminController extends AppController {
 	}
 	
 	public function isAuthorized($user) {
-		$this->set('currUser', $user);
-		if (!$this->isAdmin()) {
+		if (!$this->UserGroup->hasAdminAccess($this->currUserGroup())) {
 			$this->redirect($this->Auth->loginAction);
 			return false;
 		}
+		$this->set('currUser', $user);
 		return true;
 	}
 	
 	public function isAdmin() {
-		return AuthComponent::user('user_group_id') == 1;
+		return AuthComponent::user('user_group_id') == UserGroup::ADMIN;
 	}
 
 	public function index() {

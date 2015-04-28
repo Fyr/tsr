@@ -1,5 +1,7 @@
 <?
 App::uses('AppModel', 'Model');
+App::uses('User', 'Model');
+App::uses('UserGroup', 'Model');
 App::uses('Media', 'Media.Model');
 App::uses('UserAppModel', 'User.Model');
 App::uses('Campaign', 'User.Model');
@@ -54,9 +56,16 @@ class Advert extends UserAppModel {
 		),
 	);
 	
-	protected $Campaign;
+	protected $Campaign, $User, $UserGroup;
 	
 	public function isAvail($id, $user_id) {
+		$this->loadModel('User');
+		$this->loadModel('UserGroup');
+		$user = $this->User->findById($user_id);
+		if ($user && $this->UserGroup->hasAdminAccess($user['User']['user_group_id'])) {
+			return true;
+		}
+		
 		$this->loadModel('User.Campaign');
 		$ids = $this->Campaign->idsAvail($user_id);
 		

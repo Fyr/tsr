@@ -1,5 +1,7 @@
 <?
 App::uses('AppModel', 'Model');
+App::uses('User', 'Model');
+App::uses('UserGroup', 'Model');
 App::uses('UserAppModel', 'User.Model');
 App::uses('Campaign', 'User.Model');
 App::uses('WidgetByCategory', 'User.Model');
@@ -71,7 +73,7 @@ class Widget extends UserAppModel {
 		),
 	);
 	
-	protected $WidgetByCategory, $Campaign;
+	protected $WidgetByCategory, $Campaign, $User, $UserGroup;
 	
 	public function checkHexColor($check) {
 		list($value) = array_values($check);
@@ -100,6 +102,13 @@ class Widget extends UserAppModel {
 	}
 	
 	public function isAvail($id, $user_id) {
+		$this->loadModel('User');
+		$this->loadModel('UserGroup');
+		$user = $this->User->findById($user_id);
+		if ($user && $this->UserGroup->hasAdminAccess($user['User']['user_group_id'])) {
+			return true;
+		}
+		
 		$this->loadModel('User.Campaign');
 		$ids = $this->Campaign->idsAvail($user_id);
 		

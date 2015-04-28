@@ -2,6 +2,11 @@
 App::uses('AppModel', 'Model');
 class User extends AppModel {
 	
+	const ADMIN = 1;
+	const PUBLISHER = 2;
+	const EDITOR = 3;
+	const MODERATOR = 4;
+	
 	public $validate = array(
 		'username' => array(
 			'checkNotEmpty' => array(

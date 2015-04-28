@@ -1,5 +1,7 @@
 <?
 App::uses('AppModel', 'Model');
+App::uses('User', 'Model');
+App::uses('UserGroup', 'Model');
 App::uses('UserAppModel', 'User.Model');
 App::uses('Domain', 'User.Model');
 class Campaign extends UserAppModel {
@@ -20,6 +22,12 @@ class Campaign extends UserAppModel {
 	}
 	
 	public function isAvail($id, $user_id) {
+		$this->loadModel('User');
+		$this->loadModel('UserGroup');
+		$user = $this->User->findById($user_id);
+		if ($user && $this->UserGroup->hasAdminAccess($user['User']['user_group_id'])) {
+			return true;
+		}
 		$conditions = array('Campaign.id' => $id, 'Domain.user_id' => $user_id);
 		return $this->find('first', compact('conditions'));
 	}

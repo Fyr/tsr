@@ -1,8 +1,10 @@
 <?php
 App::uses('AdminController', 'Controller');
+App::uses('User', 'Model');
+App::uses('UserGroup', 'Model');
 class AdminUsersController extends AdminController {
     public $name = 'AdminUsers';
-    public $uses = array('User');
+    public $uses = array('User', 'UserGroup');
     
     public function beforeFilter() {
 		if (!$this->isAdmin()) {
@@ -35,5 +37,7 @@ class AdminUsersController extends AdminController {
 			$this->request->data = $this->User->findById($id);
 			$this->request->data('User.password', '');
 		}
+		
+		$this->set('aUserGroupOptions', $this->UserGroup->options());
     }
 }

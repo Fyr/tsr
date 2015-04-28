@@ -1,7 +1,11 @@
 <?php
 App::uses('Controller', 'Controller');
+App::uses('User', 'Model');
+App::uses('UserGroup', 'Model');
+App::uses('Media', 'Media.Model');
+
 class AppController extends Controller {
-	public $uses = array('User', 'Media.Media');
+	public $uses = array('User', 'UserGroup', 'Media.Media');
 	public $components = array(
 		'Session', 'RequestHandler',
 		'Auth' => array(
@@ -90,6 +94,7 @@ class AppController extends Controller {
 		$this->set('currLink', $this->currLink);
 		$this->set('pageTitle', $this->pageTitle);
 		$this->set('aBreadCrumbs', $this->aBreadCrumbs);
+		$this->set('hasAdminAccess', $this->hasAdminAccess());
 		
 		$this->beforeRenderLayout();
 	}
@@ -107,5 +112,13 @@ class AppController extends Controller {
 	 */
 	protected function setFlash($msg, $type = 'info') {
 		$this->Session->setFlash($msg, 'default', array(), $type);
+	}
+	
+	public function currUserGroup() {
+		return ($this->Auth->loggedIn()) ? AuthComponent::user('user_group_id') : null;
+	}
+	
+	public function hasAdminAccess() {
+		return $this->UserGroup->hasAdminAccess($this->currUserGroup());
 	}
 }

@@ -35,6 +35,7 @@ class AdvertsController extends UserAppController {
 
 	public function edit($id = 0, $campaign_id = 0) {
 		$lAccess = true;
+		fdebug(array($id, $this->Advert->isAvail($id, $this->currUserID)));
 		if ($campaign_id && !$this->Campaign->isAvail($campaign_id, $this->currUserID)) {
 			$lAccess = false;
 		} elseif ($id && !$this->Advert->isAvail($id, $this->currUserID)) {
